@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Delivery Info — L'Cinco Pizza</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/style.css" />
+  <style>
+    .page-hero { background: linear-gradient(135deg, #0d0d0d 0%, #1a1a1a 100%); border-bottom: 1px solid #2a2a2a; padding: 80px 24px 60px; text-align: center; }
+    .page-hero-tag { font-size:11px; font-weight:700; letter-spacing:3px; color:var(--accent-red); text-transform:uppercase; margin-bottom:12px; }
+    .page-hero-title { font-family:'Montserrat',sans-serif; font-size:clamp(32px,5vw,56px); font-weight:900; color:#fff; text-transform:uppercase; margin-bottom:16px; }
+    .page-hero-title span { color:var(--accent-red); }
+    .page-hero-sub { font-size:15px; color:#b0b0b0; max-width:500px; margin:0 auto; line-height:1.7; }
+    .page-main { max-width:1080px; margin:0 auto; padding:72px 24px 100px; }
+    .delivery-grid { display:grid; grid-template-columns:1fr 1fr; gap:40px; margin-bottom:64px; }
+    .info-card { background:#141414; border:1px solid #2a2a2a; border-radius:20px; padding:36px 32px; }
+    .info-card-icon { width:52px; height:52px; background:rgba(227,21,21,0.1); border-radius:14px; display:flex; align-items:center; justify-content:center; font-size:26px; margin-bottom:20px; }
+    .info-card h3 { font-family:'Montserrat',sans-serif; font-size:16px; font-weight:800; color:#fff; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:12px; }
+    .info-card p, .info-card li { font-size:14px; color:#888; line-height:1.8; }
+    .info-card ul { list-style:none; padding:0; }
+    .info-card ul li { padding:6px 0; border-bottom:1px solid #1e1e1e; display:flex; align-items:center; gap:10px; }
+    .info-card ul li:last-child { border-bottom:none; }
+    .info-card ul li::before { content:'•'; color:var(--accent-red); font-size:18px; flex-shrink:0; }
+    .fee-highlight { display:flex; align-items:center; justify-content:space-between; background:#0d0d0d; border:1px solid #2a2a2a; border-radius:10px; padding:14px 18px; margin-top:14px; }
+    .fee-highlight span { font-size:13px; color:#888; }
+    .fee-highlight strong { font-size:15px; color:#fff; font-weight:700; }
+    .fee-highlight.free strong { color:#4caf50; }
+    .zones-section { margin-bottom:64px; }
+    .zones-section h2 { font-family:'Montserrat',sans-serif; font-size:22px; font-weight:900; color:#fff; text-transform:uppercase; margin-bottom:8px; }
+    .zones-section > p { font-size:14px; color:#777; margin-bottom:28px; }
+    .zones-grid { display:grid; grid-template-columns:repeat(3, 1fr); gap:16px; }
+    .zone-card { background:#141414; border:1px solid #2a2a2a; border-radius:14px; padding:20px; display:flex; align-items:center; gap:14px; transition:border-color 0.2s; }
+    .zone-card:hover { border-color:var(--accent-red); }
+    .zone-pin { width:36px; height:36px; background:rgba(227,21,21,0.1); border-radius:10px; display:flex; align-items:center; justify-content:center; flex-shrink:0; color:var(--accent-red); }
+    .zone-card h4 { font-size:13px; font-weight:700; color:#fff; margin-bottom:2px; }
+    .zone-card p { font-size:12px; color:#666; }
+    .steps-section h2 { font-family:'Montserrat',sans-serif; font-size:22px; font-weight:900; color:#fff; text-transform:uppercase; margin-bottom:8px; }
+    .steps-section > p { font-size:14px; color:#777; margin-bottom:32px; }
+    .steps-list { display:grid; grid-template-columns:repeat(4, 1fr); gap:24px; }
+    .step-card { text-align:center; }
+    .step-num { width:48px; height:48px; background:var(--accent-red); border-radius:50%; display:flex; align-items:center; justify-content:center; font-family:'Montserrat',sans-serif; font-size:18px; font-weight:900; color:#fff; margin:0 auto 16px; }
+    .step-card h4 { font-family:'Montserrat',sans-serif; font-size:13px; font-weight:800; color:#fff; text-transform:uppercase; margin-bottom:8px; }
+    .step-card p { font-size:13px; color:#777; line-height:1.6; }
+    @media(max-width:900px) { .delivery-grid { grid-template-columns:1fr; } .zones-grid { grid-template-columns:1fr 1fr; } .steps-list { grid-template-columns:1fr 1fr; } }
+    @media(max-width:600px) { .zones-grid, .steps-list { grid-template-columns:1fr; } }
+  </style>
+</head>
+<body>
+
+<nav class="navbar" id="navbar">
+  <div class="nav-container">
+    <a href="/" class="nav-logo">
+      <span class="logo-l">L'</span><span class="logo-cinco">CINCO</span>
+      <span class="logo-pizza">PIZZA</span>
+    </a>
+    <button class="nav-hamburger" id="navHamburger" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="/" class="nav-link">Home</a></li>
+      <li><a href="/#pizzas" class="nav-link">Our Pizzas</a></li>
+      <li><a href="/#menu" class="nav-link">Meal</a></li>
+      <li><a href="/about" class="nav-link">About Us</a></li>
+      <li><a href="/contact" class="nav-link">Contact</a></li>
+    </ul>
+    <div class="nav-actions" style="overflow:visible;">
+      <div class="nav-delivery-wrap">
+        <div class="nav-delivery" id="deliveryBtn" role="button" aria-haspopup="listbox" aria-expanded="false">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          <span id="deliveryLocation">75001 Paris</span>
+          <svg class="delivery-chevron" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="delivery-dropdown" id="deliveryDropdown" role="listbox">
+          <div class="delivery-dropdown-header">Delivering to these zones</div>
+          <ul class="delivery-zones">
+            <li class="delivery-zone active" data-zip="75001" data-label="75001 Paris"><span class="zone-zip">75001</span><span class="zone-addr">1 Rue de Rivoli, 75001 Paris – 1er Arrondissement</span></li>
+            <li class="delivery-zone" data-zip="75008" data-label="75008 Paris"><span class="zone-zip">75008</span><span class="zone-addr">15 Av. des Champs-Élysées, 75008 Paris</span></li>
+            <li class="delivery-zone" data-zip="75011" data-label="75011 Paris"><span class="zone-zip">75011</span><span class="zone-addr">47 Bd Voltaire, 75011 Paris</span></li>
+            <li class="delivery-zone" data-zip="75013" data-label="75013 Paris"><span class="zone-zip">75013</span><span class="zone-addr">82 Avenue d'Italie, 75013 Paris</span></li>
+            <li class="delivery-zone" data-zip="75015" data-label="75015 Paris"><span class="zone-zip">75015</span><span class="zone-addr">25 Rue du Commerce, 75015 Paris</span></li>
+            <li class="delivery-zone" data-zip="92100" data-label="92100 Boulogne"><span class="zone-zip">92100</span><span class="zone-addr">12 Rue de Chartres, 92100 Boulogne-Billancourt</span></li>
+            <li class="delivery-zone" data-zip="92130" data-label="92130 Issy"><span class="zone-zip">92130</span><span class="zone-addr">5 Rue du Lavoir, 92130 Issy-les-Moulineaux</span></li>
+            <li class="delivery-zone" data-zip="93100" data-label="93100 Montreuil"><span class="zone-zip">93100</span><span class="zone-addr">8 Rue de Paris, 93100 Montreuil</span></li>
+            <li class="delivery-zone" data-zip="94300" data-label="94300 Vincennes"><span class="zone-zip">94300</span><span class="zone-addr">21 Rue du Président Wilson, 94300 Vincennes</span></li>
+          </ul>
+        </div>
+      </div>
+      <button class="cart-btn" id="cartBtn" aria-label="View cart" onclick="window.location.href='/'">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+        <span class="cart-count" id="cartCount">0</span>
+      </button>
+      <a href="/track" class="track-order-btn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        Track Order
+      </a>
+      <a href="/admin" class="admin-btn" title="Admin Panel">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        <span>Admin</span>
+      </a>
+    </div>
+  </div>
+</nav>
+<script>
+(function(){
+  var nb=document.getElementById('navbar'),hb=document.getElementById('navHamburger'),nl=document.getElementById('navLinks');
+  var db=document.getElementById('deliveryBtn'),dd=document.getElementById('deliveryDropdown'),dl=document.getElementById('deliveryLocation');
+  window.addEventListener('scroll',function(){nb.classList.toggle('scrolled',window.scrollY>20);},{passive:true});
+  hb.addEventListener('click',function(){nl.classList.toggle('open');});
+  nl.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){nl.classList.remove('open');});});
+  db.addEventListener('click',function(e){e.stopPropagation();var o=dd.classList.contains('open');dd.classList.toggle('open',!o);db.classList.toggle('open',!o);db.setAttribute('aria-expanded',String(!o));});
+  dd.querySelectorAll('.delivery-zone').forEach(function(z){z.addEventListener('click',function(){dd.querySelectorAll('.delivery-zone').forEach(function(x){x.classList.remove('active');});z.classList.add('active');if(dl)dl.textContent=z.dataset.label||z.dataset.zip;dd.classList.remove('open');db.classList.remove('open');db.setAttribute('aria-expanded','false');});});
+  document.addEventListener('click',function(e){if(!db.contains(e.target)&&!dd.contains(e.target)){dd.classList.remove('open');db.classList.remove('open');db.setAttribute('aria-expanded','false');}});
+  var cc=document.getElementById('cartCount');if(cc){try{var ct=JSON.parse(localStorage.getItem('lcinco_cart')||'[]');cc.textContent=ct.reduce(function(s,i){return s+(i.qty||1);},0);}catch(e){}}
+})();
+</script>
+
+<div class="page-hero">
+  <p class="page-hero-tag">Fast &amp; Fresh</p>
+  <h1 class="page-hero-title">Delivery <span>Info</span></h1>
+  <p class="page-hero-sub">Everything you need to know about our delivery — zones, times, fees, and how to order.</p>
+</div>
+
+<main class="page-main">
+
+  <!-- Key Info Cards -->
+  <div class="delivery-grid" style="margin-bottom:64px;">
+    <div class="info-card">
+      <div class="info-card-icon">⏱️</div>
+      <h3>Delivery Time</h3>
+      <p>We guarantee delivery within <strong style="color:#fff">30 minutes</strong> from the moment your order is confirmed. During peak hours (Friday &amp; Saturday evenings) allow up to 45 minutes.</p>
+    </div>
+    <div class="info-card">
+      <div class="info-card-icon">🛵</div>
+      <h3>Delivery Hours</h3>
+      <ul>
+        <li>Monday – Friday: 11:00 – 23:00</li>
+        <li>Saturday: 11:00 – 23:30</li>
+        <li>Sunday: 12:00 – 22:00</li>
+      </ul>
+    </div>
+    <div class="info-card">
+      <div class="info-card-icon">💳</div>
+      <h3>Delivery Fees</h3>
+      <p>We keep fees simple and fair.</p>
+      <div class="fee-highlight">
+        <span>Orders under $25</span>
+        <strong>$2.99</strong>
+      </div>
+      <div class="fee-highlight free" style="margin-top:8px;">
+        <span>Orders over $25</span>
+        <strong>FREE</strong>
+      </div>
+    </div>
+    <div class="info-card">
+      <div class="info-card-icon">📦</div>
+      <h3>Packaging</h3>
+      <p>All our pizzas are delivered in insulated, <strong style="color:#fff">100% recyclable</strong> boxes designed to keep your pizza hot and crispy from our oven to your door. We never compromise on packaging quality.</p>
+    </div>
+  </div>
+
+  <!-- Delivery Zones -->
+  <div class="zones-section">
+    <h2>Our Delivery Zones</h2>
+    <p>We currently deliver to 9 areas across Paris and the inner suburbs.</p>
+    <div class="zones-grid">
+      <div class="zone-card">
+        <div class="zone-pin"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+        <div><h4>75001</h4><p>1er Arrondissement</p></div>
+      </div>
+      <div class="zone-card">
+        <div class="zone-pin"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+        <div><h4>75008</h4><p>8ème Arrondissement</p></div>
+      </div>
+      <div class="zone-card">
+        <div class="zone-pin"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+        <div><h4>75011</h4><p>11ème Arrondissement</p></div>
+      </div>
+      <div class="zone-card">
+        <div class="zone-pin"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+        <div><h4>75013</h4><p>13ème Arrondissement</p></div>
+      </div>
+      <div class="zone-card">
+        <div class="zone-pin"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+        <div><h4>75015</h4><p>15ème Arrondissement</p></div>
+      </div>
+      <div class="zone-card">
+        <div class="zone-pin"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+        <div><h4>92100</h4><p>Boulogne-Billancourt</p></div>
+      </div>
+      <div class="zone-card">
+        <div class="zone-pin"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+        <div><h4>92130</h4><p>Issy-les-Moulineaux</p></div>
+      </div>
+      <div class="zone-card">
+        <div class="zone-pin"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+        <div><h4>93100</h4><p>Montreuil</p></div>
+      </div>
+      <div class="zone-card">
+        <div class="zone-pin"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+        <div><h4>94300</h4><p>Vincennes</p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- How to Order -->
+  <div class="steps-section">
+    <h2>How to Order</h2>
+    <p>Getting hot pizza delivered is simple — just 4 steps.</p>
+    <div class="steps-list">
+      <div class="step-card">
+        <div class="step-num">1</div>
+        <h4>Browse</h4>
+        <p>Explore our menu and pick your favourite pizzas. Customize size: S, M, or L.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">2</div>
+        <h4>Add to Cart</h4>
+        <p>Add items to your cart, apply any coupon codes, and review your order total.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">3</div>
+        <h4>Place Order</h4>
+        <p>Enter your delivery address and payment details, then hit Place Order.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">4</div>
+        <h4>Track &amp; Enjoy</h4>
+        <p>Track your order in real-time using your order code. Hot pizza incoming!</p>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-container">
+    <div class="footer-brand">
+      <div class="footer-logo">
+        <span class="logo-l">L'</span><span class="logo-cinco">CINCO</span>
+        <span class="logo-pizza">PIZZA</span>
+      </div>
+      <p class="footer-desc">The true taste of pizza! Homemade recipes, fresh ingredients and a whole lot of passion.</p>
+      <div class="footer-social">
+        <a href="#" aria-label="Facebook"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+        <a href="#" aria-label="Instagram"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
+        <a href="#" aria-label="TikTok"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.74a4.85 4.85 0 0 1-1.01-.05z"/></svg></a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>NAVIGATION</h4>
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/#pizzas">Our Pizzas</a></li>
+        <li><a href="/#menu">Meal</a></li>
+        <li><a href="/about">About Us</a></li>
+        <li><a href="/contact">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>INFORMATION</h4>
+      <ul>
+        <li><a href="/delivery">Delivery</a></li>
+        <li><a href="/terms">Terms &amp; Conditions</a></li>
+        <li><a href="/privacy">Privacy Policy</a></li>
+        <li><a href="/faq">FAQ</a></li>
+      </ul>
+    </div>
+    <div class="footer-col footer-contact">
+      <h4>CONTACT</h4>
+      <ul>
+        <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.41 2 2 0 0 1 3.6 1.23h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.77a16 16 0 0 0 6 6l.97-.97a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.73 16z"/></svg><span>+01 23 45 67 89</span></li>
+        <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg><span>contact@lcinco-pizza.fr</span></li>
+        <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg><span>1 Rue de Rivoli<br />75001 Paris, France</span></li>
+      </ul>
+    </div>
+    <div class="footer-col footer-newsletter">
+      <h4>STAY UPDATED</h4>
+      <p>Subscribe to our newsletter for offers and news!</p>
+      <form class="newsletter-form" id="newsletterForm">
+        <input type="email" placeholder="Your email" required />
+        <button type="submit" aria-label="Subscribe"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
+      </form>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2024 L'Cinco Pizza — All rights reserved.</p>
+    <p class="footer-credit">Made by <a href="https://www.fiverr.com/s/2K3oA3V" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;text-underline-offset:3px;">Adib</a></p>
+  </div>
+</footer>
+<script>document.getElementById('newsletterForm')?.addEventListener('submit',e=>{e.preventDefault();e.target.reset();alert('Subscribed! Thank you.');});</script>
+
+</body>
+</html>

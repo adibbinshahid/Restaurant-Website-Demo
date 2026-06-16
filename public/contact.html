@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact — L'Cinco Pizza</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/style.css" />
+  <style>
+    .page-hero {
+      background: linear-gradient(135deg, #0d0d0d 0%, #1a1a1a 100%);
+      border-bottom: 1px solid #2a2a2a;
+      padding: 80px 24px 60px;
+      text-align: center;
+    }
+    .page-hero-tag { font-size:11px; font-weight:700; letter-spacing:3px; color:var(--accent-red); text-transform:uppercase; margin-bottom:12px; }
+    .page-hero-title { font-family:'Montserrat',sans-serif; font-size:clamp(32px,5vw,56px); font-weight:900; color:#fff; text-transform:uppercase; margin-bottom:16px; }
+    .page-hero-title span { color:var(--accent-red); }
+    .page-hero-sub { font-size:15px; color:#b0b0b0; max-width:480px; margin:0 auto; line-height:1.7; }
+    .contact-main {
+      max-width: 1060px;
+      margin: 0 auto;
+      padding: 72px 24px 100px;
+      display: grid;
+      grid-template-columns: 1fr 420px;
+      gap: 56px;
+      align-items: start;
+    }
+    /* Form */
+    .contact-form-card {
+      background: #141414;
+      border: 1px solid #2a2a2a;
+      border-radius: 20px;
+      padding: 40px 36px;
+    }
+    .contact-form-card h2 {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 20px;
+      font-weight: 800;
+      color: #fff;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .contact-form-card > p { font-size: 13px; color: #777; margin-bottom: 28px; }
+    .form-field { margin-bottom: 18px; }
+    .form-field label { display: block; font-size: 11.5px; font-weight: 600; color: #888; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 7px; }
+    .form-field input, .form-field textarea, .form-field select {
+      width: 100%;
+      background: #0d0d0d;
+      border: 1px solid #2a2a2a;
+      border-radius: 10px;
+      padding: 12px 16px;
+      color: #fff;
+      font-family: 'Poppins', sans-serif;
+      font-size: 13.5px;
+      outline: none;
+      transition: border-color 0.2s;
+      box-sizing: border-box;
+    }
+    .form-field input:focus, .form-field textarea:focus, .form-field select:focus { border-color: var(--accent-red); }
+    .form-field textarea { resize: vertical; min-height: 130px; }
+    .form-field select option { background: #1a1a1a; }
+    .form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .form-submit-btn {
+      width: 100%;
+      padding: 14px;
+      background: var(--accent-red);
+      border: none;
+      border-radius: 10px;
+      color: #fff;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 13.5px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
+      margin-top: 8px;
+    }
+    .form-submit-btn:hover { background: #ff2020; transform: translateY(-1px); }
+    .form-submit-btn:disabled { background: #555; cursor: not-allowed; transform: none; }
+    .form-success {
+      display: none;
+      background: rgba(76,175,80,0.1);
+      border: 1px solid rgba(76,175,80,0.3);
+      border-radius: 10px;
+      padding: 16px 20px;
+      color: #4caf50;
+      font-size: 14px;
+      text-align: center;
+      margin-top: 16px;
+    }
+    .form-error-msg {
+      display: none;
+      color: var(--accent-red);
+      font-size: 12.5px;
+      margin-top: 10px;
+      text-align: center;
+    }
+    /* Info panel */
+    .contact-info { display: flex; flex-direction: column; gap: 20px; }
+    .contact-info-card {
+      background: #141414;
+      border: 1px solid #2a2a2a;
+      border-radius: 16px;
+      padding: 24px;
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+    .contact-info-icon {
+      width: 44px;
+      height: 44px;
+      background: rgba(227,21,21,0.1);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: var(--accent-red);
+    }
+    .contact-info-card h3 { font-family:'Montserrat',sans-serif; font-size:13px; font-weight:800; color:#fff; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:6px; }
+    .contact-info-card p { font-size:13px; color:#888; line-height:1.6; }
+    .contact-info-card a { color:#888; text-decoration:none; }
+    .contact-info-card a:hover { color:var(--accent-red); }
+    .contact-hours-grid { display:grid; grid-template-columns:1fr 1fr; gap:4px 16px; margin-top:4px; }
+    .contact-hours-grid span { font-size:12px; color:#888; }
+    .contact-hours-grid strong { font-size:12px; color:#ccc; font-weight:600; }
+    @media (max-width:900px) {
+      .contact-main { grid-template-columns:1fr; }
+      .form-row-2 { grid-template-columns:1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar" id="navbar">
+  <div class="nav-container">
+    <a href="/" class="nav-logo">
+      <span class="logo-l">L'</span><span class="logo-cinco">CINCO</span>
+      <span class="logo-pizza">PIZZA</span>
+    </a>
+    <button class="nav-hamburger" id="navHamburger" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="/" class="nav-link">Home</a></li>
+      <li><a href="/#pizzas" class="nav-link">Our Pizzas</a></li>
+      <li><a href="/#menu" class="nav-link">Meal</a></li>
+      <li><a href="/about" class="nav-link">About Us</a></li>
+      <li><a href="/contact" class="nav-link active">Contact</a></li>
+    </ul>
+    <div class="nav-actions" style="overflow:visible;">
+      <div class="nav-delivery-wrap">
+        <div class="nav-delivery" id="deliveryBtn" role="button" aria-haspopup="listbox" aria-expanded="false">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          <span id="deliveryLocation">75001 Paris</span>
+          <svg class="delivery-chevron" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="delivery-dropdown" id="deliveryDropdown" role="listbox">
+          <div class="delivery-dropdown-header">Delivering to these zones</div>
+          <ul class="delivery-zones">
+            <li class="delivery-zone active" data-zip="75001" data-label="75001 — 1er Arr."><span class="zone-zip">75001</span><span class="zone-addr">1 Rue de Rivoli, 75001 Paris – 1er Arrondissement</span></li>
+            <li class="delivery-zone" data-zip="75008" data-label="75008 — 8ème Arr."><span class="zone-zip">75008</span><span class="zone-addr">15 Av. des Champs-Élysées, 75008 Paris</span></li>
+            <li class="delivery-zone" data-zip="75011" data-label="75011 — 11ème Arr."><span class="zone-zip">75011</span><span class="zone-addr">47 Bd Voltaire, 75011 Paris</span></li>
+            <li class="delivery-zone" data-zip="75013" data-label="75013 — 13ème Arr."><span class="zone-zip">75013</span><span class="zone-addr">82 Avenue d'Italie, 75013 Paris</span></li>
+            <li class="delivery-zone" data-zip="75015" data-label="75015 — 15ème Arr."><span class="zone-zip">75015</span><span class="zone-addr">25 Rue du Commerce, 75015 Paris</span></li>
+            <li class="delivery-zone" data-zip="92100" data-label="92100 — Boulogne"><span class="zone-zip">92100</span><span class="zone-addr">12 Rue de Chartres, 92100 Boulogne-Billancourt</span></li>
+            <li class="delivery-zone" data-zip="92130" data-label="92130 — Issy"><span class="zone-zip">92130</span><span class="zone-addr">5 Rue du Lavoir, 92130 Issy-les-Moulineaux</span></li>
+            <li class="delivery-zone" data-zip="93100" data-label="93100 — Montreuil"><span class="zone-zip">93100</span><span class="zone-addr">8 Rue de Paris, 93100 Montreuil</span></li>
+            <li class="delivery-zone" data-zip="94300" data-label="94300 — Vincennes"><span class="zone-zip">94300</span><span class="zone-addr">21 Rue du Président Wilson, 94300 Vincennes</span></li>
+          </ul>
+        </div>
+      </div>
+      <button class="cart-btn" id="cartBtn" aria-label="View cart" onclick="window.location.href='/'">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+        <span class="cart-count" id="cartCount">0</span>
+      </button>
+      <a href="/track" class="track-order-btn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        Track Order
+      </a>
+      <a href="/admin" class="admin-btn" title="Admin Panel">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        <span>Admin</span>
+      </a>
+    </div>
+  </div>
+</nav>
+<script>
+(function(){
+  var nb=document.getElementById('navbar'),hb=document.getElementById('navHamburger'),nl=document.getElementById('navLinks');
+  var db=document.getElementById('deliveryBtn'),dd=document.getElementById('deliveryDropdown'),dl=document.getElementById('deliveryLocation');
+  window.addEventListener('scroll',function(){nb.classList.toggle('scrolled',window.scrollY>20);},{passive:true});
+  hb.addEventListener('click',function(){nl.classList.toggle('open');});
+  nl.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){nl.classList.remove('open');});});
+  db.addEventListener('click',function(e){e.stopPropagation();var o=dd.classList.contains('open');dd.classList.toggle('open',!o);db.classList.toggle('open',!o);db.setAttribute('aria-expanded',String(!o));});
+  dd.querySelectorAll('.delivery-zone').forEach(function(z){z.addEventListener('click',function(){dd.querySelectorAll('.delivery-zone').forEach(function(x){x.classList.remove('active');});z.classList.add('active');if(dl)dl.textContent=z.dataset.label||z.dataset.zip;dd.classList.remove('open');db.classList.remove('open');db.setAttribute('aria-expanded','false');});});
+  document.addEventListener('click',function(e){if(!db.contains(e.target)&&!dd.contains(e.target)){dd.classList.remove('open');db.classList.remove('open');db.setAttribute('aria-expanded','false');}});
+  var cc=document.getElementById('cartCount');if(cc){try{var ct=JSON.parse(localStorage.getItem('lcinco_cart')||'[]');cc.textContent=ct.reduce(function(s,i){return s+(i.qty||1);},0);}catch(e){}}
+})();
+</script>
+
+<div class="page-hero">
+  <p class="page-hero-tag">Get In Touch</p>
+  <h1 class="page-hero-title">Contact <span>Us</span></h1>
+  <p class="page-hero-sub">Have a question, a special request, or just want to say hello? We'd love to hear from you.</p>
+</div>
+
+<main class="contact-main">
+
+  <!-- Form -->
+  <div class="contact-form-card">
+    <h2>Send Us a Message</h2>
+    <p>We typically respond within a few hours during business hours.</p>
+    <form id="contactForm" novalidate>
+      <div class="form-row-2">
+        <div class="form-field">
+          <label>Full Name *</label>
+          <input type="text" id="cf_name" placeholder="Your name" required />
+        </div>
+        <div class="form-field">
+          <label>Phone Number</label>
+          <input type="tel" id="cf_phone" placeholder="+33 6 XX XX XX XX" />
+        </div>
+      </div>
+      <div class="form-field">
+        <label>Email Address *</label>
+        <input type="email" id="cf_email" placeholder="you@example.com" required />
+      </div>
+      <div class="form-field">
+        <label>Subject</label>
+        <select id="cf_subject">
+          <option value="">Select a topic...</option>
+          <option value="Order Issue">Order Issue</option>
+          <option value="Delivery Question">Delivery Question</option>
+          <option value="Feedback">Feedback</option>
+          <option value="Partnership">Partnership</option>
+          <option value="Catering">Catering Enquiry</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+      <div class="form-field">
+        <label>Message *</label>
+        <textarea id="cf_message" placeholder="Tell us how we can help..."></textarea>
+      </div>
+      <button type="submit" class="form-submit-btn" id="contactSubmitBtn">Send Message</button>
+      <div class="form-success" id="formSuccess">
+        ✓ Message sent! We'll get back to you shortly.
+      </div>
+      <div class="form-error-msg" id="formError"></div>
+    </form>
+  </div>
+
+  <!-- Info -->
+  <div class="contact-info">
+    <div class="contact-info-card">
+      <div class="contact-info-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      </div>
+      <div>
+        <h3>Our Location</h3>
+        <p>1 Rue de Rivoli<br />75001 Paris, France<br /><a href="https://maps.google.com" target="_blank">Get directions →</a></p>
+      </div>
+    </div>
+    <div class="contact-info-card">
+      <div class="contact-info-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.41 2 2 0 0 1 3.6 1.23h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.77a16 16 0 0 0 6 6l.97-.97a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+      </div>
+      <div>
+        <h3>Phone</h3>
+        <p><a href="tel:+0123456789">+01 23 45 67 89</a></p>
+      </div>
+    </div>
+    <div class="contact-info-card">
+      <div class="contact-info-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+      </div>
+      <div>
+        <h3>Email</h3>
+        <p><a href="mailto:contact@lcinco-pizza.fr">contact@lcinco-pizza.fr</a></p>
+      </div>
+    </div>
+    <div class="contact-info-card">
+      <div class="contact-info-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      </div>
+      <div>
+        <h3>Opening Hours</h3>
+        <div class="contact-hours-grid">
+          <span>Mon – Fri</span><strong>11:00 – 23:00</strong>
+          <span>Saturday</span><strong>11:00 – 23:30</strong>
+          <span>Sunday</span><strong>12:00 – 22:00</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-container">
+    <div class="footer-brand">
+      <div class="footer-logo">
+        <span class="logo-l">L'</span><span class="logo-cinco">CINCO</span>
+        <span class="logo-pizza">PIZZA</span>
+      </div>
+      <p class="footer-desc">The true taste of pizza! Homemade recipes, fresh ingredients and a whole lot of passion.</p>
+      <div class="footer-social">
+        <a href="#" aria-label="Facebook"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+        <a href="#" aria-label="Instagram"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
+        <a href="#" aria-label="TikTok"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.74a4.85 4.85 0 0 1-1.01-.05z"/></svg></a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>NAVIGATION</h4>
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/#pizzas">Our Pizzas</a></li>
+        <li><a href="/#menu">Meal</a></li>
+        <li><a href="/about">About Us</a></li>
+        <li><a href="/contact">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>INFORMATION</h4>
+      <ul>
+        <li><a href="/delivery">Delivery</a></li>
+        <li><a href="/terms">Terms &amp; Conditions</a></li>
+        <li><a href="/privacy">Privacy Policy</a></li>
+        <li><a href="/faq">FAQ</a></li>
+      </ul>
+    </div>
+    <div class="footer-col footer-contact">
+      <h4>CONTACT</h4>
+      <ul>
+        <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.41 2 2 0 0 1 3.6 1.23h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.77a16 16 0 0 0 6 6l.97-.97a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.73 16z"/></svg><span>+01 23 45 67 89</span></li>
+        <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg><span>contact@lcinco-pizza.fr</span></li>
+        <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg><span>1 Rue de Rivoli<br />75001 Paris, France</span></li>
+      </ul>
+    </div>
+    <div class="footer-col footer-newsletter">
+      <h4>STAY UPDATED</h4>
+      <p>Subscribe to our newsletter for offers and news!</p>
+      <form class="newsletter-form" id="newsletterForm">
+        <input type="email" placeholder="Your email" required />
+        <button type="submit" aria-label="Subscribe"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
+      </form>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2024 L'Cinco Pizza — All rights reserved.</p>
+    <p class="footer-credit">Made by <a href="https://www.fiverr.com/s/2K3oA3V" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;text-underline-offset:3px;">Adib</a></p>
+  </div>
+</footer>
+<script>document.getElementById('newsletterForm')?.addEventListener('submit',e=>{e.preventDefault();e.target.reset();alert('Subscribed! Thank you.');});</script>
+
+<script>
+  document.getElementById('contactForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const btn = document.getElementById('contactSubmitBtn');
+    const successEl = document.getElementById('formSuccess');
+    const errorEl = document.getElementById('formError');
+    const name = document.getElementById('cf_name').value.trim();
+    const email = document.getElementById('cf_email').value.trim();
+    const message = document.getElementById('cf_message').value.trim();
+    if (!name || !email || !message) {
+      errorEl.textContent = 'Please fill in all required fields (name, email, message).';
+      errorEl.style.display = 'block';
+      return;
+    }
+    errorEl.style.display = 'none';
+    btn.disabled = true;
+    btn.textContent = 'Sending...';
+    try {
+      const r = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name,
+          email,
+          phone: document.getElementById('cf_phone').value,
+          subject: document.getElementById('cf_subject').value,
+          message,
+        }),
+      });
+      const data = await r.json();
+      if (data.success) {
+        successEl.style.display = 'block';
+        this.reset();
+        btn.textContent = 'Send Message';
+        btn.disabled = false;
+      } else {
+        throw new Error(data.error || 'Send failed');
+      }
+    } catch (err) {
+      errorEl.textContent = err.message || 'Failed to send. Please try again.';
+      errorEl.style.display = 'block';
+      btn.textContent = 'Send Message';
+      btn.disabled = false;
+    }
+  });
+</script>
+</body>
+</html>

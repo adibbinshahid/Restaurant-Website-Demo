@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Privacy Policy — L'Cinco Pizza</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/style.css" />
+  <style>
+    .page-hero { background: linear-gradient(135deg, #0d0d0d 0%, #1a1a1a 100%); border-bottom: 1px solid #2a2a2a; padding: 80px 24px 60px; text-align: center; }
+    .page-hero-tag { font-size:11px; font-weight:700; letter-spacing:3px; color:var(--accent-red); text-transform:uppercase; margin-bottom:12px; }
+    .page-hero-title { font-family:'Montserrat',sans-serif; font-size:clamp(28px,4vw,48px); font-weight:900; color:#fff; text-transform:uppercase; margin-bottom:16px; }
+    .page-hero-title span { color:var(--accent-red); }
+    .page-hero-sub { font-size:14px; color:#666; max-width:500px; margin:0 auto; }
+    .page-main { max-width:820px; margin:0 auto; padding:72px 24px 100px; }
+    .legal-updated { font-size:12px; color:#555; margin-bottom:48px; padding:12px 20px; background:#141414; border:1px solid #2a2a2a; border-radius:8px; display:inline-block; }
+    .legal-section { margin-bottom:44px; }
+    .legal-section h2 { font-family:'Montserrat',sans-serif; font-size:16px; font-weight:800; color:#fff; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:14px; padding-bottom:10px; border-bottom:1px solid #2a2a2a; }
+    .legal-section p { font-size:14px; color:#888; line-height:1.85; margin-bottom:12px; }
+    .legal-section ul { list-style:none; padding:0; margin:10px 0 12px; }
+    .legal-section ul li { font-size:14px; color:#888; line-height:1.8; padding:4px 0 4px 20px; position:relative; }
+    .legal-section ul li::before { content:'—'; position:absolute; left:0; color:#444; }
+    .legal-section a { color:var(--accent-red); text-decoration:none; }
+    .legal-section strong { color:#ccc; font-weight:600; }
+    .legal-toc { background:#141414; border:1px solid #2a2a2a; border-radius:14px; padding:28px 32px; margin-bottom:48px; }
+    .legal-toc h3 { font-family:'Montserrat',sans-serif; font-size:12px; font-weight:800; color:#fff; text-transform:uppercase; letter-spacing:1px; margin-bottom:16px; }
+    .legal-toc ol { padding-left:20px; margin:0; }
+    .legal-toc li { font-size:13px; color:#888; line-height:2; }
+    .legal-toc a { color:#888; text-decoration:none; }
+    .legal-toc a:hover { color:var(--accent-red); }
+    .gdpr-badge { display:inline-flex; align-items:center; gap:8px; background:rgba(76,175,80,0.08); border:1px solid rgba(76,175,80,0.2); border-radius:8px; padding:10px 16px; margin-bottom:24px; font-size:13px; color:#4caf50; font-weight:600; }
+  </style>
+</head>
+<body>
+
+<nav class="navbar" id="navbar">
+  <div class="nav-container">
+    <a href="/" class="nav-logo">
+      <span class="logo-l">L'</span><span class="logo-cinco">CINCO</span>
+      <span class="logo-pizza">PIZZA</span>
+    </a>
+    <button class="nav-hamburger" id="navHamburger" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="/" class="nav-link">Home</a></li>
+      <li><a href="/#pizzas" class="nav-link">Our Pizzas</a></li>
+      <li><a href="/#menu" class="nav-link">Meal</a></li>
+      <li><a href="/about" class="nav-link">About Us</a></li>
+      <li><a href="/contact" class="nav-link">Contact</a></li>
+    </ul>
+    <div class="nav-actions" style="overflow:visible;">
+      <div class="nav-delivery-wrap">
+        <div class="nav-delivery" id="deliveryBtn" role="button" aria-haspopup="listbox" aria-expanded="false">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          <span id="deliveryLocation">75001 Paris</span>
+          <svg class="delivery-chevron" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="delivery-dropdown" id="deliveryDropdown" role="listbox">
+          <div class="delivery-dropdown-header">Delivering to these zones</div>
+          <ul class="delivery-zones">
+            <li class="delivery-zone active" data-zip="75001" data-label="75001 Paris"><span class="zone-zip">75001</span><span class="zone-addr">1 Rue de Rivoli, 75001 Paris – 1er Arrondissement</span></li>
+            <li class="delivery-zone" data-zip="75008" data-label="75008 Paris"><span class="zone-zip">75008</span><span class="zone-addr">15 Av. des Champs-Élysées, 75008 Paris</span></li>
+            <li class="delivery-zone" data-zip="75011" data-label="75011 Paris"><span class="zone-zip">75011</span><span class="zone-addr">47 Bd Voltaire, 75011 Paris</span></li>
+            <li class="delivery-zone" data-zip="75013" data-label="75013 Paris"><span class="zone-zip">75013</span><span class="zone-addr">82 Avenue d'Italie, 75013 Paris</span></li>
+            <li class="delivery-zone" data-zip="75015" data-label="75015 Paris"><span class="zone-zip">75015</span><span class="zone-addr">25 Rue du Commerce, 75015 Paris</span></li>
+            <li class="delivery-zone" data-zip="92100" data-label="92100 Boulogne"><span class="zone-zip">92100</span><span class="zone-addr">12 Rue de Chartres, 92100 Boulogne-Billancourt</span></li>
+            <li class="delivery-zone" data-zip="92130" data-label="92130 Issy"><span class="zone-zip">92130</span><span class="zone-addr">5 Rue du Lavoir, 92130 Issy-les-Moulineaux</span></li>
+            <li class="delivery-zone" data-zip="93100" data-label="93100 Montreuil"><span class="zone-zip">93100</span><span class="zone-addr">8 Rue de Paris, 93100 Montreuil</span></li>
+            <li class="delivery-zone" data-zip="94300" data-label="94300 Vincennes"><span class="zone-zip">94300</span><span class="zone-addr">21 Rue du Président Wilson, 94300 Vincennes</span></li>
+          </ul>
+        </div>
+      </div>
+      <button class="cart-btn" id="cartBtn" aria-label="View cart" onclick="window.location.href='/'">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+        <span class="cart-count" id="cartCount">0</span>
+      </button>
+      <a href="/track" class="track-order-btn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        Track Order
+      </a>
+      <a href="/admin" class="admin-btn" title="Admin Panel">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        <span>Admin</span>
+      </a>
+    </div>
+  </div>
+</nav>
+<script>
+(function(){
+  var nb=document.getElementById('navbar'),hb=document.getElementById('navHamburger'),nl=document.getElementById('navLinks');
+  var db=document.getElementById('deliveryBtn'),dd=document.getElementById('deliveryDropdown'),dl=document.getElementById('deliveryLocation');
+  window.addEventListener('scroll',function(){nb.classList.toggle('scrolled',window.scrollY>20);},{passive:true});
+  hb.addEventListener('click',function(){nl.classList.toggle('open');});
+  nl.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){nl.classList.remove('open');});});
+  db.addEventListener('click',function(e){e.stopPropagation();var o=dd.classList.contains('open');dd.classList.toggle('open',!o);db.classList.toggle('open',!o);db.setAttribute('aria-expanded',String(!o));});
+  dd.querySelectorAll('.delivery-zone').forEach(function(z){z.addEventListener('click',function(){dd.querySelectorAll('.delivery-zone').forEach(function(x){x.classList.remove('active');});z.classList.add('active');if(dl)dl.textContent=z.dataset.label||z.dataset.zip;dd.classList.remove('open');db.classList.remove('open');db.setAttribute('aria-expanded','false');});});
+  document.addEventListener('click',function(e){if(!db.contains(e.target)&&!dd.contains(e.target)){dd.classList.remove('open');db.classList.remove('open');db.setAttribute('aria-expanded','false');}});
+  var cc=document.getElementById('cartCount');if(cc){try{var ct=JSON.parse(localStorage.getItem('lcinco_cart')||'[]');cc.textContent=ct.reduce(function(s,i){return s+(i.qty||1);},0);}catch(e){}}
+})();
+</script>
+
+<div class="page-hero">
+  <p class="page-hero-tag">Legal</p>
+  <h1 class="page-hero-title">Privacy <span>Policy</span></h1>
+  <p class="page-hero-sub">We respect your privacy and are committed to protecting your personal data.</p>
+</div>
+
+<main class="page-main">
+
+  <div class="legal-updated">Last updated: 1 January 2024</div>
+
+  <div class="gdpr-badge">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+    GDPR Compliant — EU General Data Protection Regulation
+  </div>
+
+  <div class="legal-toc">
+    <h3>Contents</h3>
+    <ol>
+      <li><a href="#controller">Data Controller</a></li>
+      <li><a href="#data-collected">Data We Collect</a></li>
+      <li><a href="#how-we-use">How We Use Your Data</a></li>
+      <li><a href="#legal-basis">Legal Basis for Processing</a></li>
+      <li><a href="#sharing">Data Sharing</a></li>
+      <li><a href="#retention">Data Retention</a></li>
+      <li><a href="#cookies">Cookies</a></li>
+      <li><a href="#your-rights">Your Rights</a></li>
+      <li><a href="#security">Data Security</a></li>
+      <li><a href="#changes">Changes to This Policy</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ol>
+  </div>
+
+  <div class="legal-section" id="controller">
+    <h2>1. Data Controller</h2>
+    <p>L'Cinco Pizza ("we", "us", "our") is the data controller responsible for your personal data. We are registered in France and operate from our principal location at 1 Rue de Rivoli, 75001 Paris, France.</p>
+    <p>If you have any questions about how we handle your personal data, contact our data protection team at <a href="mailto:privacy@lcinco-pizza.fr">privacy@lcinco-pizza.fr</a>.</p>
+  </div>
+
+  <div class="legal-section" id="data-collected">
+    <h2>2. Data We Collect</h2>
+    <p>We collect the following categories of personal data when you use our services:</p>
+    <ul>
+      <li><strong>Identity data:</strong> first name, last name</li>
+      <li><strong>Contact data:</strong> email address, phone number, delivery address</li>
+      <li><strong>Order data:</strong> items ordered, order history, preferences</li>
+      <li><strong>Payment data:</strong> payment method type and last 4 digits (we do not store full card numbers)</li>
+      <li><strong>Technical data:</strong> IP address, browser type and version, device type, pages visited, time and date of access</li>
+      <li><strong>Communication data:</strong> messages sent via our contact form or email</li>
+      <li><strong>Marketing data:</strong> your preferences for receiving marketing communications from us</li>
+    </ul>
+    <p>We do not intentionally collect data from individuals under the age of 18. If you believe we have collected data about a minor, please contact us immediately.</p>
+  </div>
+
+  <div class="legal-section" id="how-we-use">
+    <h2>3. How We Use Your Data</h2>
+    <p>We use your personal data for the following purposes:</p>
+    <ul>
+      <li>Processing and fulfilling your orders (including delivery coordination)</li>
+      <li>Sending order confirmations and delivery status updates</li>
+      <li>Responding to your enquiries and customer service requests</li>
+      <li>Sending marketing communications (only if you have opted in)</li>
+      <li>Improving our website and service through analytics</li>
+      <li>Fraud prevention and security</li>
+      <li>Compliance with legal obligations</li>
+    </ul>
+  </div>
+
+  <div class="legal-section" id="legal-basis">
+    <h2>4. Legal Basis for Processing</h2>
+    <p>Under GDPR, we process your personal data on the following legal bases:</p>
+    <ul>
+      <li><strong>Contract performance:</strong> processing necessary to fulfil your order and deliver our services</li>
+      <li><strong>Legitimate interests:</strong> fraud prevention, security, analytics to improve our services</li>
+      <li><strong>Legal obligation:</strong> compliance with applicable laws and regulations</li>
+      <li><strong>Consent:</strong> marketing communications (you may withdraw consent at any time)</li>
+    </ul>
+  </div>
+
+  <div class="legal-section" id="sharing">
+    <h2>5. Data Sharing</h2>
+    <p>We do not sell your personal data to third parties. We may share your data with:</p>
+    <ul>
+      <li><strong>Delivery partners:</strong> your name, address, and phone number are shared with our delivery staff to fulfil your order</li>
+      <li><strong>Payment processors:</strong> secure payment gateways (Stripe, PayPal) to process transactions</li>
+      <li><strong>Analytics providers:</strong> anonymised usage data to improve our website performance</li>
+      <li><strong>Legal authorities:</strong> where required by law or court order</li>
+    </ul>
+    <p>All third-party service providers are required to process your data securely and only for the specified purpose.</p>
+  </div>
+
+  <div class="legal-section" id="retention">
+    <h2>6. Data Retention</h2>
+    <p>We retain your personal data for as long as necessary to fulfil the purposes for which it was collected:</p>
+    <ul>
+      <li>Order and transaction data: 7 years (legal/tax obligation)</li>
+      <li>Account data: until account deletion or 3 years of inactivity</li>
+      <li>Marketing preferences: until you unsubscribe or request deletion</li>
+      <li>Contact form messages: 2 years</li>
+      <li>Technical/log data: 90 days</li>
+    </ul>
+  </div>
+
+  <div class="legal-section" id="cookies">
+    <h2>7. Cookies</h2>
+    <p>Our website uses cookies and similar technologies to improve your experience. We use:</p>
+    <ul>
+      <li><strong>Essential cookies:</strong> required for core site functions (cart, session management) — these cannot be disabled</li>
+      <li><strong>Analytics cookies:</strong> help us understand how visitors use our site (usage statistics)</li>
+      <li><strong>Local Storage:</strong> we store your cart data in your browser's local storage for convenience</li>
+    </ul>
+    <p>You can manage cookie preferences through your browser settings. Note that disabling certain cookies may affect site functionality.</p>
+  </div>
+
+  <div class="legal-section" id="your-rights">
+    <h2>8. Your Rights</h2>
+    <p>Under GDPR, you have the following rights regarding your personal data:</p>
+    <ul>
+      <li><strong>Right of access:</strong> request a copy of the personal data we hold about you</li>
+      <li><strong>Right to rectification:</strong> request correction of inaccurate or incomplete data</li>
+      <li><strong>Right to erasure:</strong> request deletion of your personal data ("right to be forgotten")</li>
+      <li><strong>Right to restriction:</strong> request that we limit how we process your data</li>
+      <li><strong>Right to portability:</strong> receive your data in a structured, machine-readable format</li>
+      <li><strong>Right to object:</strong> object to processing based on legitimate interests or for direct marketing</li>
+      <li><strong>Right to withdraw consent:</strong> withdraw consent for marketing at any time</li>
+    </ul>
+    <p>To exercise any of these rights, please contact us at <a href="mailto:privacy@lcinco-pizza.fr">privacy@lcinco-pizza.fr</a>. We will respond within 30 days. You also have the right to lodge a complaint with the French data protection authority (CNIL) at <a href="https://www.cnil.fr" target="_blank">www.cnil.fr</a>.</p>
+  </div>
+
+  <div class="legal-section" id="security">
+    <h2>9. Data Security</h2>
+    <p>We implement appropriate technical and organisational measures to protect your personal data against unauthorised access, loss, or destruction. These include:</p>
+    <ul>
+      <li>HTTPS encryption for all data in transit</li>
+      <li>Secure, access-controlled database storage</li>
+      <li>Regular security assessments and updates</li>
+      <li>Staff training on data protection</li>
+      <li>Strict access controls — only authorised personnel can access personal data</li>
+    </ul>
+    <p>In the event of a data breach affecting your rights and freedoms, we will notify the relevant supervisory authority within 72 hours and inform you without undue delay.</p>
+  </div>
+
+  <div class="legal-section" id="changes">
+    <h2>10. Changes to This Policy</h2>
+    <p>We may update this Privacy Policy from time to time. The latest version will always be available on this page with the "Last updated" date revised accordingly. We encourage you to check this page periodically.</p>
+    <p>Where changes are significant, we will notify you by email or by placing a prominent notice on our website.</p>
+  </div>
+
+  <div class="legal-section" id="contact">
+    <h2>11. Contact</h2>
+    <p>For any questions, requests, or concerns regarding this Privacy Policy or our data processing practices:</p>
+    <ul>
+      <li>Email: <a href="mailto:privacy@lcinco-pizza.fr">privacy@lcinco-pizza.fr</a></li>
+      <li>Phone: +01 23 45 67 89</li>
+      <li>Post: L'Cinco Pizza, Data Protection, 1 Rue de Rivoli, 75001 Paris, France</li>
+      <li>Or use our <a href="/contact">contact form</a></li>
+    </ul>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-container">
+    <div class="footer-brand">
+      <div class="footer-logo">
+        <span class="logo-l">L'</span><span class="logo-cinco">CINCO</span>
+        <span class="logo-pizza">PIZZA</span>
+      </div>
+      <p class="footer-desc">The true taste of pizza! Homemade recipes, fresh ingredients and a whole lot of passion.</p>
+      <div class="footer-social">
+        <a href="#" aria-label="Facebook"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+        <a href="#" aria-label="Instagram"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
+        <a href="#" aria-label="TikTok"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.74a4.85 4.85 0 0 1-1.01-.05z"/></svg></a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>NAVIGATION</h4>
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/#pizzas">Our Pizzas</a></li>
+        <li><a href="/#menu">Meal</a></li>
+        <li><a href="/about">About Us</a></li>
+        <li><a href="/contact">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>INFORMATION</h4>
+      <ul>
+        <li><a href="/delivery">Delivery</a></li>
+        <li><a href="/terms">Terms &amp; Conditions</a></li>
+        <li><a href="/privacy">Privacy Policy</a></li>
+        <li><a href="/faq">FAQ</a></li>
+      </ul>
+    </div>
+    <div class="footer-col footer-contact">
+      <h4>CONTACT</h4>
+      <ul>
+        <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.41 2 2 0 0 1 3.6 1.23h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.77a16 16 0 0 0 6 6l.97-.97a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.73 16z"/></svg><span>+01 23 45 67 89</span></li>
+        <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg><span>contact@lcinco-pizza.fr</span></li>
+        <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg><span>1 Rue de Rivoli<br />75001 Paris, France</span></li>
+      </ul>
+    </div>
+    <div class="footer-col footer-newsletter">
+      <h4>STAY UPDATED</h4>
+      <p>Subscribe to our newsletter for offers and news!</p>
+      <form class="newsletter-form" id="newsletterForm">
+        <input type="email" placeholder="Your email" required />
+        <button type="submit" aria-label="Subscribe"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
+      </form>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2024 L'Cinco Pizza — All rights reserved.</p>
+    <p class="footer-credit">Made by <a href="https://www.fiverr.com/s/2K3oA3V" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;text-underline-offset:3px;">Adib</a></p>
+  </div>
+</footer>
+<script>document.getElementById('newsletterForm')?.addEventListener('submit',e=>{e.preventDefault();e.target.reset();alert('Subscribed! Thank you.');});</script>
+
+</body>
+</html>

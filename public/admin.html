@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin — L'Cinco Pizza</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <link rel="stylesheet" href="/css/admin.css" />
+</head>
+<body>
+
+<!-- Login Screen -->
+<div id="loginScreen" class="login-screen">
+  <div class="login-card">
+    <div class="login-logo"><span class="logo-l">L'</span><span class="logo-cinco">CINCO</span><span class="logo-pizza">PIZZA</span></div>
+    <h2>Admin Panel</h2>
+    <p class="login-subtitle">Sign in to manage your restaurant</p>
+    <form id="loginForm" class="login-form">
+      <div class="form-field"><label>Username</label><input type="text" id="loginUser" value="admin" autocomplete="username" required /></div>
+      <div class="form-field"><label>Password</label><input type="password" id="loginPass" value="admin" autocomplete="current-password" required /></div>
+      <div class="login-error" id="loginError"></div>
+      <button type="submit" class="btn-primary login-btn">Sign In</button>
+    </form>
+    <a href="/" class="back-link">← Back to website</a>
+  </div>
+</div>
+
+<!-- Admin App -->
+<div id="adminApp" class="admin-app" style="display:none">
+
+  <!-- Sidebar -->
+  <aside class="admin-sidebar">
+    <div class="sidebar-logo"><span class="logo-l">L'</span><span class="logo-cinco">CINCO</span><span class="logo-pizza">PIZZA</span></div>
+    <nav class="sidebar-nav">
+      <button class="sidebar-item active" data-tab="dashboard">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        Dashboard
+      </button>
+      <button class="sidebar-item" data-tab="orders">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+        Orders <span class="sidebar-badge" id="ordersBadge"></span>
+      </button>
+      <button class="sidebar-item" data-tab="pizzas">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+        Pizzas
+      </button>
+      <button class="sidebar-item" data-tab="meals">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
+        Meal Deals
+      </button>
+      <button class="sidebar-item" data-tab="coupons">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+        Coupons
+      </button>
+      <div class="sidebar-divider"></div>
+      <button class="sidebar-item" data-tab="banners">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        Hero Banners
+      </button>
+      <button class="sidebar-item" data-tab="announcements">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+        Announcements
+      </button>
+      <button class="sidebar-item" data-tab="store">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        Store Settings
+      </button>
+      <button class="sidebar-item" data-tab="notifications">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        Notifications
+      </button>
+      <button class="sidebar-item" data-tab="settings">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+        Site Settings
+      </button>
+    </nav>
+    <div class="sidebar-footer">
+      <a href="/" target="_blank" class="sidebar-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg> View Site</a>
+      <button class="sidebar-item logout-btn" id="logoutBtn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg> Sign Out</button>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main class="admin-main">
+    <header class="admin-header">
+      <div id="pageTitle" class="page-title">Dashboard</div>
+      <div class="admin-header-actions" id="headerActions"></div>
+    </header>
+
+    <!-- ── Dashboard ─────────────────────────────────────────── -->
+    <div class="admin-tab active" id="tab-dashboard">
+      <!-- Stat Cards -->
+      <div class="dash-stats" id="dashStats">
+        <div class="stat-card clickable" data-detail="pizzas-total"><div class="stat-icon red"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg></div><div class="stat-info"><span class="stat-label">Total Pizzas</span><span class="stat-value" id="dPizzasTotal">—</span></div><div class="stat-trend" id="dPizzasTrend"></div></div>
+        <div class="stat-card clickable" data-detail="pizzas-active"><div class="stat-icon green"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div><div class="stat-info"><span class="stat-label">Active Items</span><span class="stat-value" id="dPizzasActive">—</span></div></div>
+        <div class="stat-card clickable" data-detail="pizzas-inactive"><div class="stat-icon yellow"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg></div><div class="stat-info"><span class="stat-label">Inactive Items</span><span class="stat-value" id="dPizzasInactive">—</span></div></div>
+        <div class="stat-card clickable" data-detail="orders-active"><div class="stat-icon blue"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/></svg></div><div class="stat-info"><span class="stat-label">Ongoing Orders</span><span class="stat-value" id="dOrdersActive">—</span></div><div class="stat-pulse" id="dOrdersPulse"></div></div>
+        <div class="stat-card clickable" data-detail="orders-delivery"><div class="stat-icon orange"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></div><div class="stat-info"><span class="stat-label">Out for Delivery</span><span class="stat-value" id="dOrdersDelivery">—</span></div></div>
+        <div class="stat-card clickable" data-detail="revenue-ongoing"><div class="stat-icon red"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div><div class="stat-info"><span class="stat-label">Ongoing Revenue</span><span class="stat-value" id="dRevenueOngoing">—</span></div></div>
+        <div class="stat-card clickable" data-detail="coupons-active"><div class="stat-icon purple"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg></div><div class="stat-info"><span class="stat-label">Active Coupons</span><span class="stat-value" id="dCouponsActive">—</span></div></div>
+        <div class="stat-card clickable" data-detail="revenue-today"><div class="stat-icon green"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div><div class="stat-info"><span class="stat-label">Today's Revenue</span><span class="stat-value" id="dRevenueToday">—</span></div></div>
+      </div>
+
+      <!-- Detail Panel -->
+      <div class="detail-panel" id="detailPanel" style="display:none">
+        <div class="detail-panel-header"><span id="detailPanelTitle"></span><button class="detail-close" id="detailClose">✕</button></div>
+        <div class="detail-panel-body" id="detailPanelBody"></div>
+      </div>
+
+      <!-- Charts Row -->
+      <div class="dash-charts">
+        <div class="chart-card chart-main">
+          <div class="chart-card-header">
+            <h3>Revenue & Orders</h3>
+            <div class="chart-toggles">
+              <button class="chart-toggle active" data-range="7">7 Days</button>
+              <button class="chart-toggle" data-range="14">14 Days</button>
+              <button class="chart-toggle" data-range="30">30 Days</button>
+            </div>
+          </div>
+          <div class="chart-wrap"><canvas id="revenueChart"></canvas></div>
+        </div>
+        <div class="chart-card chart-side">
+          <div class="chart-card-header"><h3>Order Status</h3></div>
+          <div class="chart-wrap chart-wrap-sm"><canvas id="statusChart"></canvas></div>
+          <div class="status-legend" id="statusLegend"></div>
+        </div>
+      </div>
+
+      <!-- Income Summary -->
+      <div class="income-grid">
+        <div class="income-card"><div class="income-period">Today</div><div class="income-value" id="incToday">—</div><div class="income-sub" id="incTodaySub"></div></div>
+        <div class="income-card"><div class="income-period">This Week</div><div class="income-value" id="incWeek">—</div><div class="income-sub" id="incWeekSub"></div></div>
+        <div class="income-card"><div class="income-period">This Month</div><div class="income-value" id="incMonth">—</div><div class="income-sub" id="incMonthSub"></div></div>
+        <div class="income-card lifetime"><div class="income-period">Lifetime</div><div class="income-value" id="incLifetime">—</div><div class="income-sub">All time total</div></div>
+      </div>
+
+      <!-- Coupon Metrics -->
+      <div class="coupon-metrics">
+        <h3 class="metrics-title">Coupon Performance</h3>
+        <div class="coupon-metrics-grid">
+          <div class="coupon-metric-card"><span class="cm-label">Active Coupons</span><span class="cm-value" id="cmActive">—</span></div>
+          <div class="coupon-metric-card highlight"><span class="cm-label">Used in Active Orders</span><span class="cm-value" id="cmActiveOrders">—</span></div>
+          <div class="coupon-metric-card"><span class="cm-label">Today's Uses</span><span class="cm-value" id="cmToday">—</span></div>
+          <div class="coupon-metric-card"><span class="cm-label">Weekly Uses</span><span class="cm-value" id="cmWeek">—</span></div>
+          <div class="coupon-metric-card"><span class="cm-label">Monthly Uses</span><span class="cm-value" id="cmMonth">—</span></div>
+          <div class="coupon-metric-card"><span class="cm-label">Lifetime Uses</span><span class="cm-value" id="cmLifetime">—</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Orders ──────────────────────────────────────────────── -->
+    <div class="admin-tab" id="tab-orders">
+      <div class="orders-filter-bar">
+        <button class="filter-pill active" data-status="all">All</button>
+        <button class="filter-pill" data-status="received">Just Received</button>
+        <button class="filter-pill" data-status="processing">Processing</button>
+        <button class="filter-pill" data-status="out_for_delivery">Out for Delivery</button>
+        <button class="filter-pill" data-status="completed">Completed</button>
+        <button class="filter-pill" data-status="cancelled">Cancelled</button>
+      </div>
+      <div class="admin-table-wrap">
+        <table class="admin-table orders-table">
+          <thead><tr><th>Order #</th><th>Customer</th><th>Items</th><th>Coupon</th><th>Status</th><th>Timer</th><th>Income</th><th>Actions</th></tr></thead>
+          <tbody id="ordersTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ── Pizzas ──────────────────────────────────────────────── -->
+    <div class="admin-tab" id="tab-pizzas">
+      <div class="admin-table-wrap">
+        <table class="admin-table"><thead><tr><th>Image</th><th>Name</th><th>Category</th><th>S</th><th>M</th><th>L</th><th>Badge</th><th>Status</th><th>Actions</th></tr></thead>
+        <tbody id="pizzasTableBody"></tbody></table>
+      </div>
+    </div>
+
+    <!-- ── Meals ───────────────────────────────────────────────── -->
+    <div class="admin-tab" id="tab-meals">
+      <div class="admin-table-wrap">
+        <table class="admin-table"><thead><tr><th>Image</th><th>Name</th><th>Description</th><th>Components</th><th>Price</th><th>Status</th><th>Actions</th></tr></thead>
+        <tbody id="mealsTableBody"></tbody></table>
+      </div>
+    </div>
+
+    <!-- ── Coupons ─────────────────────────────────────────────── -->
+    <div class="admin-tab" id="tab-coupons">
+      <div class="admin-table-wrap">
+        <table class="admin-table"><thead><tr><th>Code</th><th>Description</th><th>Type</th><th>Value</th><th>Min Order</th><th>Uses</th><th>Status</th><th>Actions</th></tr></thead>
+        <tbody id="couponsTableBody"></tbody></table>
+      </div>
+    </div>
+
+    <!-- ── Banners ─────────────────────────────────────────────── -->
+    <div class="admin-tab" id="tab-banners">
+      <div class="admin-table-wrap">
+        <table class="admin-table"><thead><tr><th>Image</th><th>Title</th><th>Subtitle</th><th>CTA</th><th>Order</th><th>Status</th><th>Actions</th></tr></thead>
+        <tbody id="bannersTableBody"></tbody></table>
+      </div>
+    </div>
+
+    <!-- ── Announcements ───────────────────────────────────────── -->
+    <div class="admin-tab" id="tab-announcements">
+      <div class="admin-table-wrap">
+        <table class="admin-table"><thead><tr><th>#</th><th>Text</th><th>Status</th><th>Actions</th></tr></thead>
+        <tbody id="announcementsTableBody"></tbody></table>
+      </div>
+    </div>
+
+    <!-- ── Store Settings ──────────────────────────────────────── -->
+    <div class="admin-tab" id="tab-store">
+      <div class="store-settings-grid">
+        <!-- Status Card -->
+        <div class="store-card store-card-status">
+          <h3>Store Status</h3>
+          <div class="store-toggle-section">
+            <div class="store-status-indicator" id="storeIndicator">
+              <div class="store-indicator-dot" id="storeIndicatorDot"></div>
+              <span id="storeIndicatorLabel">Checking...</span>
+            </div>
+            <label class="big-toggle">
+              <input type="checkbox" id="storeOpenToggle" />
+              <span class="big-toggle-track"><span class="big-toggle-thumb"></span></span>
+            </label>
+            <div class="store-toggle-label" id="storeToggleLabel">Store is Open</div>
+          </div>
+          <div class="form-field" style="margin-top:16px">
+            <label>Status Message (shown to customers)</label>
+            <div style="display:flex;gap:8px">
+              <input type="text" id="storeStatusMsg" placeholder="We are open! Order now..." />
+              <button class="btn-primary btn-sm" id="saveStatusMsg">Save</button>
+            </div>
+          </div>
+          <div class="form-check-row" style="margin-top:14px">
+            <input type="checkbox" id="autoScheduleToggle" />
+            <label for="autoScheduleToggle">Enable automatic schedule (controls open/close by day & time)</label>
+          </div>
+        </div>
+
+        <!-- Schedule Card -->
+        <div class="store-card store-card-schedule">
+          <h3>Weekly Schedule</h3>
+          <p class="schedule-hint">When auto-schedule is on, the store will automatically open/close based on these times.</p>
+          <div class="schedule-grid" id="scheduleGrid"></div>
+          <button class="btn-primary" id="saveScheduleBtn" style="margin-top:16px">Save Schedule</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Notification Settings ──────────────────────────────────── -->
+    <div class="admin-tab" id="tab-notifications">
+      <div class="notif-settings-wrap">
+        <div class="notif-header-card">
+          <div class="notif-header-text">
+            <h3>Order Notification Recipients</h3>
+            <p>These email addresses receive a notification whenever a new order is placed.</p>
+          </div>
+          <div class="notif-add-form">
+            <input type="email" id="notifEmailInput" placeholder="email@example.com" />
+            <input type="text" id="notifLabelInput" placeholder="Label (e.g. Manager)" />
+            <button class="btn-primary btn-sm" id="notifAddBtn">+ Add Email</button>
+          </div>
+        </div>
+        <div class="admin-table-wrap" style="margin-top:16px">
+          <table class="admin-table">
+            <thead><tr><th>Email Address</th><th>Label</th><th>Status</th><th>Added</th><th>Actions</th></tr></thead>
+            <tbody id="notifEmailsTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Site Settings ───────────────────────────────────────── -->
+    <div class="admin-tab" id="tab-settings">
+      <div class="settings-grid" id="settingsGrid"></div>
+    </div>
+  </main>
+</div>
+
+<!-- Modal -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal" id="modal">
+    <div class="modal-header"><h3 id="modalTitle">Edit</h3><button class="modal-close" id="modalClose">✕</button></div>
+    <div class="modal-body" id="modalBody"></div>
+    <div class="modal-footer"><button class="btn-secondary" id="modalCancel">Cancel</button><button class="btn-primary" id="modalSave">Save</button></div>
+  </div>
+</div>
+
+<div class="toast-container" id="adminToastContainer"></div>
+<script src="/js/admin.js"></script>
+</body>
+</html>

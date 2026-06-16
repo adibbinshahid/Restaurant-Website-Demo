@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About Us — L'Cinco Pizza</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/style.css" />
+  <style>
+    .page-hero {
+      background: linear-gradient(135deg, #0d0d0d 0%, #1a1a1a 100%);
+      border-bottom: 1px solid #2a2a2a;
+      padding: 80px 24px 60px;
+      text-align: center;
+    }
+    .page-hero-tag {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      color: var(--accent-red);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .page-hero-title {
+      font-family: 'Montserrat', sans-serif;
+      font-size: clamp(32px, 5vw, 56px);
+      font-weight: 900;
+      color: #fff;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+    .page-hero-title span { color: var(--accent-red); }
+    .page-hero-sub {
+      font-size: 15px;
+      color: #b0b0b0;
+      max-width: 520px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+    .about-main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 72px 24px 100px;
+    }
+    .about-story {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: center;
+      margin-bottom: 80px;
+    }
+    .about-story-img {
+      border-radius: 16px;
+      overflow: hidden;
+      aspect-ratio: 4/3;
+    }
+    .about-story-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .about-story-text .section-tag {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      color: var(--accent-red);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .about-story-text h2 {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 32px;
+      font-weight: 900;
+      color: #fff;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+      line-height: 1.15;
+    }
+    .about-story-text h2 span { color: var(--accent-red); }
+    .about-story-text p {
+      font-size: 14.5px;
+      color: #b0b0b0;
+      line-height: 1.8;
+      margin-bottom: 16px;
+    }
+    .about-values {
+      margin-bottom: 80px;
+    }
+    .about-values-header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+    .about-values-header h2 {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 28px;
+      font-weight: 900;
+      color: #fff;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .about-values-header p {
+      font-size: 14px;
+      color: #888;
+    }
+    .values-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    .value-card {
+      background: #141414;
+      border: 1px solid #2a2a2a;
+      border-radius: 16px;
+      padding: 32px 24px;
+      text-align: center;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .value-card:hover { border-color: var(--accent-red); transform: translateY(-4px); }
+    .value-icon {
+      width: 56px;
+      height: 56px;
+      background: rgba(227,21,21,0.1);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      font-size: 28px;
+    }
+    .value-card h3 {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 14px;
+      font-weight: 800;
+      color: #fff;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 10px;
+    }
+    .value-card p { font-size: 13px; color: #888; line-height: 1.7; }
+    .about-team {
+      margin-bottom: 80px;
+    }
+    .about-team-header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+    .about-team-header h2 {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 28px;
+      font-weight: 900;
+      color: #fff;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .about-team-header p { font-size: 14px; color: #888; }
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    .team-card {
+      background: #141414;
+      border: 1px solid #2a2a2a;
+      border-radius: 16px;
+      overflow: hidden;
+      text-align: center;
+    }
+    .team-card-img {
+      aspect-ratio: 1;
+      overflow: hidden;
+    }
+    .team-card-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: grayscale(20%);
+      transition: filter 0.3s, transform 0.3s;
+    }
+    .team-card:hover .team-card-img img { filter: grayscale(0%); transform: scale(1.04); }
+    .team-card-info { padding: 20px 16px 24px; }
+    .team-card-info h3 {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 15px;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+    .team-card-info .team-role {
+      font-size: 11.5px;
+      color: var(--accent-red);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 10px;
+    }
+    .team-card-info p { font-size: 13px; color: #777; line-height: 1.6; }
+    .about-stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2px;
+      background: #2a2a2a;
+      border-radius: 16px;
+      overflow: hidden;
+      margin-bottom: 80px;
+    }
+    .about-stat {
+      background: #141414;
+      padding: 40px 24px;
+      text-align: center;
+    }
+    .about-stat .stat-num {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 40px;
+      font-weight: 900;
+      color: var(--accent-red);
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+    .about-stat .stat-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: #888;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    @media (max-width: 900px) {
+      .about-story { grid-template-columns: 1fr; gap: 32px; }
+      .values-grid, .team-grid { grid-template-columns: 1fr 1fr; }
+      .about-stats { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 600px) {
+      .values-grid, .team-grid, .about-stats { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav class="navbar" id="navbar">
+  <div class="nav-container">
+    <a href="/" class="nav-logo">
+      <span class="logo-l">L'</span><span class="logo-cinco">CINCO</span>
+      <span class="logo-pizza">PIZZA</span>
+    </a>
+    <button class="nav-hamburger" id="navHamburger" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="/" class="nav-link">Home</a></li>
+      <li><a href="/#pizzas" class="nav-link">Our Pizzas</a></li>
+      <li><a href="/#menu" class="nav-link">Meal</a></li>
+      <li><a href="/about" class="nav-link active">About Us</a></li>
+      <li><a href="/contact" class="nav-link">Contact</a></li>
+    </ul>
+    <div class="nav-actions" style="overflow:visible;">
+      <div class="nav-delivery-wrap">
+        <div class="nav-delivery" id="deliveryBtn" role="button" aria-haspopup="listbox" aria-expanded="false">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          <span id="deliveryLocation">75001 Paris</span>
+          <svg class="delivery-chevron" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="delivery-dropdown" id="deliveryDropdown" role="listbox">
+          <div class="delivery-dropdown-header">Delivering to these zones</div>
+          <ul class="delivery-zones">
+            <li class="delivery-zone active" data-zip="75001" data-label="75001 — 1er Arr."><span class="zone-zip">75001</span><span class="zone-addr">1 Rue de Rivoli, 75001 Paris – 1er Arrondissement</span></li>
+            <li class="delivery-zone" data-zip="75008" data-label="75008 — 8ème Arr."><span class="zone-zip">75008</span><span class="zone-addr">15 Av. des Champs-Élysées, 75008 Paris</span></li>
+            <li class="delivery-zone" data-zip="75011" data-label="75011 — 11ème Arr."><span class="zone-zip">75011</span><span class="zone-addr">47 Bd Voltaire, 75011 Paris</span></li>
+            <li class="delivery-zone" data-zip="75013" data-label="75013 — 13ème Arr."><span class="zone-zip">75013</span><span class="zone-addr">82 Avenue d'Italie, 75013 Paris</span></li>
+            <li class="delivery-zone" data-zip="75015" data-label="75015 — 15ème Arr."><span class="zone-zip">75015</span><span class="zone-addr">25 Rue du Commerce, 75015 Paris</span></li>
+            <li class="delivery-zone" data-zip="92100" data-label="92100 — Boulogne"><span class="zone-zip">92100</span><span class="zone-addr">12 Rue de Chartres, 92100 Boulogne-Billancourt</span></li>
+            <li class="delivery-zone" data-zip="92130" data-label="92130 — Issy"><span class="zone-zip">92130</span><span class="zone-addr">5 Rue du Lavoir, 92130 Issy-les-Moulineaux</span></li>
+            <li class="delivery-zone" data-zip="93100" data-label="93100 — Montreuil"><span class="zone-zip">93100</span><span class="zone-addr">8 Rue de Paris, 93100 Montreuil</span></li>
+            <li class="delivery-zone" data-zip="94300" data-label="94300 — Vincennes"><span class="zone-zip">94300</span><span class="zone-addr">21 Rue du Président Wilson, 94300 Vincennes</span></li>
+          </ul>
+        </div>
+      </div>
+      <button class="cart-btn" id="cartBtn" aria-label="View cart" onclick="window.location.href='/'">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+        <span class="cart-count" id="cartCount">0</span>
+      </button>
+      <a href="/track" class="track-order-btn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        Track Order
+      </a>
+      <a href="/admin" class="admin-btn" title="Admin Panel">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        <span>Admin</span>
+      </a>
+    </div>
+  </div>
+</nav>
+<script>
+(function(){
+  var nb=document.getElementById('navbar'),hb=document.getElementById('navHamburger'),nl=document.getElementById('navLinks');
+  var db=document.getElementById('deliveryBtn'),dd=document.getElementById('deliveryDropdown'),dl=document.getElementById('deliveryLocation');
+  window.addEventListener('scroll',function(){nb.classList.toggle('scrolled',window.scrollY>20);},{passive:true});
+  hb.addEventListener('click',function(){nl.classList.toggle('open');});
+  nl.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){nl.classList.remove('open');});});
+  db.addEventListener('click',function(e){e.stopPropagation();var o=dd.classList.contains('open');dd.classList.toggle('open',!o);db.classList.toggle('open',!o);db.setAttribute('aria-expanded',String(!o));});
+  dd.querySelectorAll('.delivery-zone').forEach(function(z){z.addEventListener('click',function(){dd.querySelectorAll('.delivery-zone').forEach(function(x){x.classList.remove('active');});z.classList.add('active');if(dl)dl.textContent=z.dataset.label||z.dataset.zip;dd.classList.remove('open');db.classList.remove('open');db.setAttribute('aria-expanded','false');});});
+  document.addEventListener('click',function(e){if(!db.contains(e.target)&&!dd.contains(e.target)){dd.classList.remove('open');db.classList.remove('open');db.setAttribute('aria-expanded','false');}});
+  var cc=document.getElementById('cartCount');if(cc){try{var ct=JSON.parse(localStorage.getItem('lcinco_cart')||'[]');cc.textContent=ct.reduce(function(s,i){return s+(i.qty||1);},0);}catch(e){}}
+})();
+</script>
+
+<!-- Page Hero -->
+<div class="page-hero">
+  <p class="page-hero-tag">Our Story</p>
+  <h1 class="page-hero-title">About <span>L'Cinco</span> Pizza</h1>
+  <p class="page-hero-sub">Born in the streets of Paris, crafted with Italian soul. A place where every bite tells a story.</p>
+</div>
+
+<main class="about-main">
+
+  <!-- Story -->
+  <div class="about-story">
+    <div class="about-story-img">
+      <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800&auto=format&fit=crop" alt="Our kitchen" loading="lazy" />
+    </div>
+    <div class="about-story-text">
+      <p class="section-tag">Founded 2015</p>
+      <h2>Crafted With <span>Passion</span></h2>
+      <p>L'Cinco Pizza was born from a simple dream: to bring the authentic flavours of artisan Italian pizza to the heart of Paris. Our founder, Marco Cinque, spent years mastering the craft in Naples before opening our first location in the 11th arrondissement.</p>
+      <p>Today, we serve thousands of happy customers every week — always with the same commitment to quality that started it all. Every pizza is made by hand, using dough that's cold-proofed for 48 hours and baked in our wood-fired oven at 485°C.</p>
+      <p>We are not a chain. We are not a franchise. We are a family — and we treat every customer as one.</p>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="about-stats">
+    <div class="about-stat"><div class="stat-num">9+</div><div class="stat-label">Years of passion</div></div>
+    <div class="about-stat"><div class="stat-num">8</div><div class="stat-label">Signature pizzas</div></div>
+    <div class="about-stat"><div class="stat-num">2,400+</div><div class="stat-label">Orders weekly</div></div>
+    <div class="about-stat"><div class="stat-num">4.8★</div><div class="stat-label">Average rating</div></div>
+  </div>
+
+  <!-- Values -->
+  <div class="about-values">
+    <div class="about-values-header">
+      <h2>What We Stand For</h2>
+      <p>The principles that guide every pizza we make</p>
+    </div>
+    <div class="values-grid">
+      <div class="value-card">
+        <div class="value-icon">🌾</div>
+        <h3>Fresh Ingredients</h3>
+        <p>Every ingredient is sourced fresh daily. No frozen produce, no artificial additives — just real food, honestly made.</p>
+      </div>
+      <div class="value-card">
+        <div class="value-icon">🔥</div>
+        <h3>Wood-Fired Craft</h3>
+        <p>Our oven burns at 485°C. Each pizza is hand-stretched and fire-kissed in under 90 seconds — no shortcuts, no compromises.</p>
+      </div>
+      <div class="value-card">
+        <div class="value-icon">🤝</div>
+        <h3>Community First</h3>
+        <p>We source locally wherever possible and give back to the neighbourhoods that have welcomed us since day one.</p>
+      </div>
+      <div class="value-card">
+        <div class="value-icon">🧪</div>
+        <h3>48-Hour Dough</h3>
+        <p>Our dough is cold-fermented for a minimum of 48 hours. Patience creates flavour — and ours is worth waiting for.</p>
+      </div>
+      <div class="value-card">
+        <div class="value-icon">♻️</div>
+        <h3>Sustainable Packaging</h3>
+        <p>All our packaging is 100% recyclable or compostable. Good food shouldn't cost the planet.</p>
+      </div>
+      <div class="value-card">
+        <div class="value-icon">💛</div>
+        <h3>Made With Love</h3>
+        <p>Corny? Maybe. True? Absolutely. Every pizza that leaves our kitchen has been made with genuine care and attention.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Team -->
+  <div class="about-team">
+    <div class="about-team-header">
+      <h2>Meet The Team</h2>
+      <p>The people who make the magic happen every day</p>
+    </div>
+    <div class="team-grid">
+      <div class="team-card">
+        <div class="team-card-img">
+          <img src="https://images.unsplash.com/photo-1577219491135-ce391730fb2c?w=400&auto=format&fit=crop" alt="Marco Cinque" loading="lazy" />
+        </div>
+        <div class="team-card-info">
+          <h3>Marco Cinque</h3>
+          <div class="team-role">Founder & Head Chef</div>
+          <p>Trained in Naples, obsessed with dough. Marco has been perfecting pizza for over 20 years and still tastes every batch personally.</p>
+        </div>
+      </div>
+      <div class="team-card">
+        <div class="team-card-img">
+          <img src="https://images.unsplash.com/photo-1595257841889-eca2678454e2?w=400&auto=format&fit=crop" alt="Sophie Laurent" loading="lazy" />
+        </div>
+        <div class="team-card-info">
+          <h3>Sophie Laurent</h3>
+          <div class="team-role">Operations Manager</div>
+          <p>Sophie keeps everything running smoothly — from delivery logistics to making sure every customer leaves satisfied.</p>
+        </div>
+      </div>
+      <div class="team-card">
+        <div class="team-card-img">
+          <img src="https://images.unsplash.com/photo-1607631568010-a87245c0daf8?w=400&auto=format&fit=crop" alt="Antoine Moreau" loading="lazy" />
+        </div>
+        <div class="team-card-info">
+          <h3>Antoine Moreau</h3>
+          <div class="team-role">Sous Chef</div>
+          <p>Antoine brings flair and creativity to our seasonal specials. When he's not in the kitchen, he's hunting down new ingredients at local markets.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-container">
+    <div class="footer-brand">
+      <div class="footer-logo">
+        <span class="logo-l">L'</span><span class="logo-cinco">CINCO</span>
+        <span class="logo-pizza">PIZZA</span>
+      </div>
+      <p class="footer-desc">The true taste of pizza! Homemade recipes, fresh ingredients and a whole lot of passion.</p>
+      <div class="footer-social">
+        <a href="#" aria-label="Facebook"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+        <a href="#" aria-label="Instagram"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
+        <a href="#" aria-label="TikTok"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.74a4.85 4.85 0 0 1-1.01-.05z"/></svg></a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>NAVIGATION</h4>
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/#pizzas">Our Pizzas</a></li>
+        <li><a href="/#menu">Meal</a></li>
+        <li><a href="/about">About Us</a></li>
+        <li><a href="/contact">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>INFORMATION</h4>
+      <ul>
+        <li><a href="/delivery">Delivery</a></li>
+        <li><a href="/terms">Terms &amp; Conditions</a></li>
+        <li><a href="/privacy">Privacy Policy</a></li>
+        <li><a href="/faq">FAQ</a></li>
+      </ul>
+    </div>
+    <div class="footer-col footer-contact">
+      <h4>CONTACT</h4>
+      <ul>
+        <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.41 2 2 0 0 1 3.6 1.23h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.77a16 16 0 0 0 6 6l.97-.97a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.73 16z"/></svg><span>+01 23 45 67 89</span></li>
+        <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg><span>contact@lcinco-pizza.fr</span></li>
+        <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg><span>1 Rue de Rivoli<br />75001 Paris, France</span></li>
+      </ul>
+    </div>
+    <div class="footer-col footer-newsletter">
+      <h4>STAY UPDATED</h4>
+      <p>Subscribe to our newsletter for offers and news!</p>
+      <form class="newsletter-form" id="newsletterForm">
+        <input type="email" placeholder="Your email" required />
+        <button type="submit" aria-label="Subscribe"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
+      </form>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2024 L'Cinco Pizza — All rights reserved.</p>
+    <p class="footer-credit">Made by <a href="https://www.fiverr.com/s/2K3oA3V" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;text-underline-offset:3px;">Adib</a></p>
+  </div>
+</footer>
+<script>document.getElementById('newsletterForm')?.addEventListener('submit',e=>{e.preventDefault();e.target.reset();alert('Subscribed! Thank you.');});</script>
+
+</body>
+</html>

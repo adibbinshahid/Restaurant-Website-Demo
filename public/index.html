@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>L'Cinco Pizza — The True Taste of Pizza</title>
+  <meta name="description" content="Artisan pizzas made with fresh, high-quality ingredients. Order online with 30-min delivery." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+
+<!-- Announcement Bar -->
+<div class="announcement-bar" id="announcementBar">
+  <div class="announcement-track" id="announcementTrack">
+    <span class="announcement-item">🍕 Loading offers...</span>
+  </div>
+</div>
+
+<!-- Navigation -->
+<nav class="navbar" id="navbar">
+  <div class="nav-container">
+    <a href="#" class="nav-logo">
+      <span class="logo-l">L'</span><span class="logo-cinco">CINCO</span>
+      <span class="logo-pizza">PIZZA</span>
+    </a>
+
+    <button class="nav-hamburger" id="navHamburger" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+
+    <ul class="nav-links" id="navLinks">
+      <li><a href="/" class="nav-link active">Home</a></li>
+      <li><a href="#pizzas" class="nav-link">Our Pizzas</a></li>
+      <li><a href="#menu" class="nav-link">Meal</a></li>
+      <li><a href="/about" class="nav-link">About Us</a></li>
+      <li><a href="/contact" class="nav-link">Contact</a></li>
+    </ul>
+
+    <div class="nav-actions">
+      <div class="nav-delivery-wrap">
+        <div class="nav-delivery" id="deliveryBtn" role="button" aria-haspopup="listbox" aria-expanded="false">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          <span id="deliveryLocation">75001 Paris</span>
+          <svg class="delivery-chevron" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="delivery-dropdown" id="deliveryDropdown" role="listbox">
+          <div class="delivery-dropdown-header">Delivering to these zones</div>
+          <ul class="delivery-zones">
+            <li class="delivery-zone active" data-zip="75001" data-label="75001 — 1er Arr.">
+              <span class="zone-zip">75001</span>
+              <span class="zone-addr">1 Rue de Rivoli, 75001 Paris – 1er Arrondissement</span>
+            </li>
+            <li class="delivery-zone" data-zip="75008" data-label="75008 — 8ème Arr.">
+              <span class="zone-zip">75008</span>
+              <span class="zone-addr">15 Av. des Champs-Élysées, 75008 Paris – 8ème Arrondissement</span>
+            </li>
+            <li class="delivery-zone" data-zip="75011" data-label="75011 — 11ème Arr.">
+              <span class="zone-zip">75011</span>
+              <span class="zone-addr">47 Bd Voltaire, 75011 Paris – 11ème Arrondissement</span>
+            </li>
+            <li class="delivery-zone" data-zip="75013" data-label="75013 — 13ème Arr.">
+              <span class="zone-zip">75013</span>
+              <span class="zone-addr">82 Avenue d'Italie, 75013 Paris – 13ème Arrondissement</span>
+            </li>
+            <li class="delivery-zone" data-zip="75015" data-label="75015 — 15ème Arr.">
+              <span class="zone-zip">75015</span>
+              <span class="zone-addr">25 Rue du Commerce, 75015 Paris – 15ème Arrondissement</span>
+            </li>
+            <li class="delivery-zone" data-zip="92100" data-label="92100 — Boulogne">
+              <span class="zone-zip">92100</span>
+              <span class="zone-addr">12 Rue de Chartres, 92100 Boulogne-Billancourt</span>
+            </li>
+            <li class="delivery-zone" data-zip="92130" data-label="92130 — Issy">
+              <span class="zone-zip">92130</span>
+              <span class="zone-addr">5 Rue du Lavoir, 92130 Issy-les-Moulineaux</span>
+            </li>
+            <li class="delivery-zone" data-zip="93100" data-label="93100 — Montreuil">
+              <span class="zone-zip">93100</span>
+              <span class="zone-addr">8 Rue de Paris, 93100 Montreuil</span>
+            </li>
+            <li class="delivery-zone" data-zip="94300" data-label="94300 — Vincennes">
+              <span class="zone-zip">94300</span>
+              <span class="zone-addr">21 Rue du Président Wilson, 94300 Vincennes</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <button class="cart-btn" id="cartBtn" aria-label="Open cart">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+        <span class="cart-count" id="cartCount">0</span>
+      </button>
+
+      <a href="/track" class="track-order-btn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        Track Order
+      </a>
+      <a href="/admin" class="admin-btn" title="Admin Panel">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        <span>Admin</span>
+      </a>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero Section -->
+<section class="hero" id="hero">
+  <div class="hero-slides" id="heroSlides"></div>
+  <div class="hero-overlay"></div>
+
+  <div class="hero-content">
+    <div class="hero-text" id="heroText">
+      <p class="hero-tagline" id="heroTagline">Homemade with passion</p>
+      <h1 class="hero-title" id="heroTitle">
+        THE TRUE TASTE OF<br /><span class="hero-title-accent">PIZZA!</span>
+      </h1>
+      <p class="hero-desc" id="heroDesc">Artisan pizzas made with fresh, high-quality ingredients.<br />Discover our unique recipes!</p>
+      <a href="#pizzas" class="btn-primary hero-order-btn" id="heroCta">Order Now</a>
+    </div>
+
+    <div class="hero-image-wrap">
+      <div class="hero-pizza-badge">
+        <div class="badge-ring-wrap">
+          <svg viewBox="0 0 140 140" class="badge-ring-svg">
+            <defs>
+              <path id="badgePath" d="M70,6 A64,64 0 1,1 69.999,6" fill="none"/>
+            </defs>
+            <circle cx="70" cy="70" r="64" fill="none" stroke="rgba(245,200,66,0.18)" stroke-width="1"/>
+            <text class="badge-text-path">
+              <textPath href="#badgePath" startOffset="0%">HOMEMADE · FRESH · ARTISAN · WOOD-FIRED · DAILY ·</textPath>
+            </text>
+          </svg>
+        </div>
+        <div class="badge-center">
+          <span class="badge-num">100%</span>
+          <span class="badge-label">DOUGH</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Fixed social proof — always visible regardless of slide -->
+  <div class="hero-meta-fixed">
+    <div class="hero-reviews">
+      <div class="hero-avatars">
+        <img src="https://i.pravatar.cc/32?img=1" alt="" />
+        <img src="https://i.pravatar.cc/32?img=5" alt="" />
+        <img src="https://i.pravatar.cc/32?img=9" alt="" />
+      </div>
+      <div>
+        <div class="stars">
+          <span class="star filled">★</span><span class="star filled">★</span><span class="star filled">★</span><span class="star filled">★</span><span class="star half">★</span>
+        </div>
+        <span class="hero-rating-text" id="heroRatingText">4.8 (<span id="totalReviews">2,134</span> reviews)</span>
+      </div>
+    </div>
+    <div class="hero-orders">
+      🔥 <strong id="ordersThisWeek">2,400+</strong> orders this week
+    </div>
+  </div>
+
+  <div class="hero-dots" id="heroDots"></div>
+  <button class="hero-arrow hero-prev" id="heroPrev" aria-label="Previous slide">&#8592;</button>
+  <button class="hero-arrow hero-next" id="heroNext" aria-label="Next slide">&#8594;</button>
+</section>
+
+<!-- Feature Strip -->
+<section class="features">
+  <div class="features-grid">
+    <div class="feature-item" style="--fc:#22c55e">
+      <div class="feature-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>
+      </div>
+      <div class="feature-text">
+        <strong>Fresh Ingredients</strong>
+        <span>Sourced daily</span>
+      </div>
+    </div>
+    <div class="feature-item" style="--fc:#f97316">
+      <div class="feature-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41M18.66 5.34l-1.41 1.41"/></svg>
+      </div>
+      <div class="feature-text">
+        <strong>Made Fresh Daily</strong>
+        <span>Hand-stretched every morning</span>
+      </div>
+    </div>
+    <div class="feature-item" style="--fc:#ef4444">
+      <div class="feature-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>
+      </div>
+      <div class="feature-text">
+        <strong>Wood-Fired Oven</strong>
+        <span>Authentic taste</span>
+      </div>
+    </div>
+    <div class="feature-item" style="--fc:#3b82f6">
+      <div class="feature-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+      </div>
+      <div class="feature-text">
+        <strong>Fast Delivery</strong>
+        <span>30 min average</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Pizzas Section -->
+<section class="pizzas-section" id="pizzas">
+  <div class="section-container">
+    <div class="section-header">
+      <h2 class="section-title">OUR PIZZAS</h2>
+      <div class="filters" role="group" aria-label="Pizza category filters">
+        <button class="filter-btn active" data-filter="all">ALL</button>
+        <button class="filter-btn" data-filter="vegetarian">VEGETARIAN</button>
+        <button class="filter-btn" data-filter="meat">MEAT</button>
+        <button class="filter-btn" data-filter="spicy">SPICY</button>
+      </div>
+    </div>
+
+    <div class="pizzas-grid" id="pizzasGrid">
+      <div class="pizzas-loading">
+        <div class="loading-spinner"></div>
+        <p>Loading our delicious pizzas...</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Pizza Meal Banner -->
+<section class="meal-deal" id="menu">
+  <div class="meal-deal-content">
+    <div class="meal-deal-text">
+      <span class="meal-deal-tag">SPECIAL OFFER</span>
+      <h2 class="meal-deal-title">PIZZA MEAL</h2>
+      <ul class="meal-deal-list" id="mealDealList">
+        <li>1 Pizza of your choice</li>
+        <li>+ 1 Drink</li>
+        <li>+ 1 Dessert of your choice</li>
+      </ul>
+      <p class="meal-deal-price" id="mealDealPrice">$16.90</p>
+      <a href="#pizzas" class="btn-primary">ORDER NOW</a>
+    </div>
+    <div class="meal-deal-img">
+      <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=600&auto=format&fit=crop" alt="Pizza Meal Deal" loading="lazy" />
+    </div>
+  </div>
+
+  <div class="meal-deal-info">
+    <div class="info-item">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      <div>
+        <strong>30 MIN DELIVERY</strong>
+        <span>Average delivery time</span>
+      </div>
+    </div>
+    <div class="info-item">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      <div>
+        <strong>7 DAYS A WEEK</strong>
+        <span>11:00 AM - 11:00 PM</span>
+      </div>
+    </div>
+    <div class="info-item">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      <div>
+        <strong>LIVE ORDER TRACKING</strong>
+        <span>Track your order in real-time</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Reviews Section -->
+<section class="reviews" id="about">
+  <div class="reviews-container">
+    <div class="reviews-overall">
+      <div class="reviews-badge trustpilot">
+        <svg width="80" height="20" viewBox="0 0 80 20"><text x="0" y="15" font-size="13" font-weight="bold" fill="#00b67a">Trustpilot</text></svg>
+        <div class="stars-row">★★★★★</div>
+        <span>4.7/5 (748 reviews)</span>
+      </div>
+      <div class="reviews-main">
+        <div class="stars-row">★★★★½</div>
+        <p class="reviews-label">Excellent</p>
+        <p class="reviews-score"><strong id="reviewRating">4.8</strong> out of 5 based on <strong id="reviewCount">2,134</strong> reviews</p>
+      </div>
+      <div class="reviews-badge google">
+        <svg width="60" height="20" viewBox="0 0 60 20"><text x="0" y="15" font-size="13" font-weight="bold"><tspan fill="#4285f4">G</tspan><tspan fill="#ea4335">o</tspan><tspan fill="#fbbc05">o</tspan><tspan fill="#4285f4">g</tspan><tspan fill="#34a853">l</tspan><tspan fill="#ea4335">e</tspan></text></svg>
+        <div class="stars-row">★★★★★</div>
+        <span>4.8/5 (1,386 reviews)</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer" id="contact">
+  <div class="footer-container">
+    <div class="footer-brand">
+      <div class="footer-logo">
+        <span class="logo-l">L'</span><span class="logo-cinco">CINCO</span>
+        <span class="logo-pizza">PIZZA</span>
+      </div>
+      <p class="footer-desc" id="footerTagline">The true taste of pizza! Homemade recipes, fresh ingredients and a whole lot of passion.</p>
+      <div class="footer-social">
+        <a href="#" aria-label="Facebook">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+        </a>
+        <a href="#" aria-label="Instagram">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+        </a>
+        <a href="#" aria-label="TikTok">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.74a4.85 4.85 0 0 1-1.01-.05z"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <div class="footer-col">
+      <h4>NAVIGATION</h4>
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="#pizzas">Our Pizzas</a></li>
+        <li><a href="#menu">Meal</a></li>
+        <li><a href="/about">About Us</a></li>
+        <li><a href="/contact">Contact</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h4>INFORMATION</h4>
+      <ul>
+        <li><a href="/delivery">Delivery</a></li>
+        <li><a href="/terms">Terms &amp; Conditions</a></li>
+        <li><a href="/privacy">Privacy Policy</a></li>
+        <li><a href="/faq">FAQ</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col footer-contact">
+      <h4>CONTACT</h4>
+      <ul>
+        <li>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.41 2 2 0 0 1 3.6 1.23h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.77a16 16 0 0 0 6 6l.97-.97a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.73 16z"/></svg>
+          <span id="footerPhone">+01 23 45 67 89</span>
+        </li>
+        <li>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          <span id="footerEmail">contact@lcinco-pizza.fr</span>
+        </li>
+        <li>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          <span id="footerAddress">123 Pizza Street<br />75000 Paris, France</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="footer-col footer-newsletter">
+      <h4>STAY UPDATED</h4>
+      <p>Subscribe to our newsletter for offers and news!</p>
+      <form class="newsletter-form" id="newsletterForm">
+        <input type="email" placeholder="Your email" required />
+        <button type="submit" aria-label="Subscribe">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <p>© 2024 L'Cinco Pizza — All rights reserved.</p>
+    <p class="footer-credit">Made by <a href="https://www.fiverr.com/s/2K3oA3V" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;text-underline-offset:3px;">Adib</a></p>
+  </div>
+</footer>
+
+<!-- WhatsApp Button -->
+<a href="#" class="whatsapp-btn" id="whatsappBtn" aria-label="Contact on WhatsApp">
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+</a>
+
+<!-- Cart Sidebar -->
+<div class="cart-overlay" id="cartOverlay"></div>
+<aside class="cart-sidebar" id="cartSidebar" aria-label="Shopping cart">
+  <div class="cart-header">
+    <h3>Your Cart</h3>
+    <button class="cart-close" id="cartClose" aria-label="Close cart">✕</button>
+  </div>
+  <div class="cart-items" id="cartItems">
+    <div class="cart-empty">
+      <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+      <p>Your cart is empty</p>
+      <a href="#pizzas" class="btn-primary" id="cartEmptyCta">Browse Pizzas</a>
+    </div>
+  </div>
+  <div class="cart-footer" id="cartFooter" style="display:none">
+    <div class="cart-totals">
+      <div class="cart-subtotal">
+        <span>Subtotal</span><span id="cartSubtotal">$0.00</span>
+      </div>
+      <div class="cart-delivery-fee">
+        <span>Delivery</span><span id="cartDelivery">$2.99</span>
+      </div>
+      <div class="cart-total">
+        <span>Total</span><span id="cartTotal">$0.00</span>
+      </div>
+    </div>
+    <button class="btn-primary cart-checkout-btn">Place Order</button>
+    <button class="btn-secondary cart-clear-btn" id="cartClearBtn">Clear Cart</button>
+  </div>
+</aside>
+
+<!-- Gallery Lightbox -->
+<div class="lightbox-overlay" id="lightboxOverlay">
+  <button class="lightbox-close" id="lightboxClose" aria-label="Close gallery">✕</button>
+  <button class="lightbox-arrow lightbox-prev" id="lightboxPrev" aria-label="Previous">&#8592;</button>
+  <button class="lightbox-arrow lightbox-next" id="lightboxNext" aria-label="Next">&#8594;</button>
+  <div class="lightbox-content">
+    <div class="lightbox-img-wrap">
+      <img src="" alt="" id="lightboxImg" />
+    </div>
+    <div class="lightbox-info">
+      <span class="lightbox-badge" id="lightboxBadge"></span>
+      <h3 id="lightboxName"></h3>
+      <p id="lightboxDesc"></p>
+      <div class="lightbox-rating" id="lightboxRating"></div>
+      <div class="lightbox-sizes" id="lightboxSizes"></div>
+      <div class="lightbox-footer">
+        <span class="lightbox-price" id="lightboxPrice"></span>
+        <button class="btn-primary" id="lightboxAddCart">Add to Cart</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Toast Notifications -->
+<div class="toast-container" id="toastContainer"></div>
+
+<script src="/js/main.js"></script>
+</body>
+</html>

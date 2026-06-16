@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Track Your Order — L'Cinco Pizza</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/style.css" />
+  <style>
+    body { min-height: 100vh; }
+    .page-hero {
+      background: linear-gradient(135deg, #0d0d0d 0%, #141414 100%);
+      border-bottom: 1px solid #2a2a2a;
+      padding: 80px 24px 60px;
+      text-align: center;
+    }
+    .page-hero-tag { font-size:11px; font-weight:700; letter-spacing:3px; color:var(--accent-red); text-transform:uppercase; margin-bottom:12px; }
+    .page-hero-title { font-family:'Montserrat',sans-serif; font-size:clamp(32px,5vw,56px); font-weight:900; color:#fff; text-transform:uppercase; margin-bottom:16px; }
+    .page-hero-title span { color:var(--accent-red); }
+    .page-hero-sub { font-size:15px; color:#b0b0b0; max-width:440px; margin:0 auto; line-height:1.7; }
+
+    .track-main {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 64px 24px 100px;
+    }
+
+    /* Search box */
+    .track-search-card {
+      background: #141414;
+      border: 1px solid #2a2a2a;
+      border-radius: 20px;
+      padding: 36px 32px;
+      margin-bottom: 32px;
+    }
+    .track-search-card h2 {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 18px;
+      font-weight: 800;
+      color: #fff;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .track-search-card p { font-size:13px; color:#777; margin-bottom:24px; }
+    .track-input-row {
+      display: flex;
+      gap: 10px;
+    }
+    .track-input {
+      flex: 1;
+      background: #0d0d0d;
+      border: 1.5px solid #2a2a2a;
+      border-radius: 12px;
+      padding: 13px 18px;
+      color: #fff;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      outline: none;
+      text-transform: uppercase;
+      transition: border-color 0.2s;
+    }
+    .track-input::placeholder { color:#444; letter-spacing:1px; font-weight:400; font-family:'Poppins',sans-serif; font-size:13.5px; text-transform:none; }
+    .track-input:focus { border-color: var(--accent-red); }
+    .track-search-btn {
+      padding: 13px 24px;
+      background: var(--accent-red);
+      border: none;
+      border-radius: 12px;
+      color: #fff;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 13px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: background 0.2s;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+    .track-search-btn:hover { background: #ff2020; }
+    .track-search-btn:disabled { background: #555; cursor: not-allowed; }
+    .track-error {
+      display: none;
+      background: rgba(227,21,21,0.08);
+      border: 1px solid rgba(227,21,21,0.25);
+      border-radius: 10px;
+      padding: 12px 16px;
+      color: #ff6b6b;
+      font-size: 13.5px;
+      margin-top: 14px;
+    }
+    .track-hint {
+      text-align: center;
+      font-size: 12px;
+      color: #555;
+      margin-top: 12px;
+    }
+    .track-hint strong { color: #888; }
+
+    /* Result card */
+    .track-result {
+      display: none;
+      background: #141414;
+      border: 1px solid #2a2a2a;
+      border-radius: 20px;
+      overflow: hidden;
+    }
+    .result-header {
+      background: #0d0d0d;
+      border-bottom: 1px solid #2a2a2a;
+      padding: 20px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .result-order-num {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 18px;
+      font-weight: 900;
+      color: #fff;
+      letter-spacing: 1px;
+    }
+    .result-status-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 16px;
+      border-radius: 50px;
+      font-size: 12.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .status-dot-anim {
+      width: 8px; height: 8px; border-radius: 50%;
+    }
+    .status-received .result-status-badge { background: rgba(33,150,243,0.12); color: #64b5f6; border: 1px solid rgba(33,150,243,0.3); }
+    .status-received .status-dot-anim { background: #2196f3; animation: statusPulse 1.5s infinite; }
+    .status-processing .result-status-badge { background: rgba(255,193,7,0.12); color: #ffd54f; border: 1px solid rgba(255,193,7,0.3); }
+    .status-processing .status-dot-anim { background: #ffc107; animation: statusPulse 1.5s infinite; }
+    .status-out_for_delivery .result-status-badge { background: rgba(255,109,0,0.12); color: #ffb74d; border: 1px solid rgba(255,109,0,0.3); }
+    .status-out_for_delivery .status-dot-anim { background: #ff6d00; animation: statusPulse 1.5s infinite; }
+    .status-completed .result-status-badge { background: rgba(76,175,80,0.12); color: #81c784; border: 1px solid rgba(76,175,80,0.3); }
+    .status-completed .status-dot-anim { background: #4caf50; }
+    .status-cancelled .result-status-badge { background: rgba(120,120,120,0.12); color: #999; border: 1px solid rgba(120,120,120,0.3); }
+    .status-cancelled .status-dot-anim { background: #888; }
+    @keyframes statusPulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(1.3)} }
+
+    /* Timeline */
+    .track-timeline {
+      padding: 28px 28px 20px;
+      border-bottom: 1px solid #222;
+    }
+    .track-timeline h3 {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      color: #555;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 24px;
+    }
+    .timeline {
+      position: relative;
+      padding-left: 28px;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 8px;
+      top: 8px;
+      bottom: 8px;
+      width: 2px;
+      background: #222;
+    }
+    .timeline-step {
+      position: relative;
+      margin-bottom: 24px;
+      opacity: 0.38;
+    }
+    .timeline-step:last-child { margin-bottom: 0; }
+    .timeline-step.done, .timeline-step.current { opacity: 1; }
+    .timeline-dot {
+      position: absolute;
+      left: -24px;
+      top: 2px;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #222;
+      border: 2px solid #333;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .timeline-step.done .timeline-dot { background: #4caf50; border-color: #4caf50; }
+    .timeline-step.current .timeline-dot { background: var(--accent-red); border-color: var(--accent-red); animation: statusPulse 1.8s infinite; }
+    .timeline-step-label {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 2px;
+    }
+    .timeline-step-sub { font-size: 12px; color: #666; }
+    .timeline-step.current .timeline-step-label { color: var(--accent-red); }
+    .timeline-step.done .timeline-step-label { color: #81c784; }
+
+    /* Details */
+    .result-details {
+      padding: 24px 28px;
+    }
+    .result-details h3 {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      color: #555;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 16px;
+    }
+    .detail-row { display:flex; justify-content:space-between; align-items:flex-start; padding:9px 0; border-bottom:1px solid #1e1e1e; }
+    .detail-row:last-child { border-bottom:none; }
+    .detail-row span:first-child { font-size:12.5px; color:#666; }
+    .detail-row span:last-child { font-size:13px; color:#ccc; text-align:right; max-width:60%; }
+    .detail-total { font-family:'Montserrat',sans-serif; font-weight:800; color:#fff !important; }
+    .result-back { display:block; text-align:center; padding:16px; font-size:12.5px; color:#555; cursor:pointer; border-top:1px solid #1e1e1e; transition:color 0.2s; }
+    .result-back:hover { color:var(--accent-red); }
+  </style>
+</head>
+<body>
+
+<nav class="navbar" id="navbar">
+  <div class="nav-container">
+    <a href="/" class="nav-logo">
+      <span class="logo-l">L'</span><span class="logo-cinco">CINCO</span>
+      <span class="logo-pizza">PIZZA</span>
+    </a>
+    <button class="nav-hamburger" id="navHamburger" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="/" class="nav-link">Home</a></li>
+      <li><a href="/#pizzas" class="nav-link">Our Pizzas</a></li>
+      <li><a href="/#menu" class="nav-link">Meal</a></li>
+      <li><a href="/about" class="nav-link">About Us</a></li>
+      <li><a href="/contact" class="nav-link">Contact</a></li>
+    </ul>
+    <div class="nav-actions" style="overflow:visible;">
+      <div class="nav-delivery-wrap">
+        <div class="nav-delivery" id="deliveryBtn" role="button" aria-haspopup="listbox" aria-expanded="false">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          <span id="deliveryLocation">75001 Paris</span>
+          <svg class="delivery-chevron" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="delivery-dropdown" id="deliveryDropdown" role="listbox">
+          <div class="delivery-dropdown-header">Delivering to these zones</div>
+          <ul class="delivery-zones">
+            <li class="delivery-zone active" data-zip="75001" data-label="75001 Paris"><span class="zone-zip">75001</span><span class="zone-addr">1 Rue de Rivoli, 75001 Paris – 1er Arrondissement</span></li>
+            <li class="delivery-zone" data-zip="75008" data-label="75008 Paris"><span class="zone-zip">75008</span><span class="zone-addr">15 Av. des Champs-Élysées, 75008 Paris</span></li>
+            <li class="delivery-zone" data-zip="75011" data-label="75011 Paris"><span class="zone-zip">75011</span><span class="zone-addr">47 Bd Voltaire, 75011 Paris</span></li>
+            <li class="delivery-zone" data-zip="75013" data-label="75013 Paris"><span class="zone-zip">75013</span><span class="zone-addr">82 Avenue d'Italie, 75013 Paris</span></li>
+            <li class="delivery-zone" data-zip="75015" data-label="75015 Paris"><span class="zone-zip">75015</span><span class="zone-addr">25 Rue du Commerce, 75015 Paris</span></li>
+            <li class="delivery-zone" data-zip="92100" data-label="92100 Boulogne"><span class="zone-zip">92100</span><span class="zone-addr">12 Rue de Chartres, 92100 Boulogne-Billancourt</span></li>
+            <li class="delivery-zone" data-zip="92130" data-label="92130 Issy"><span class="zone-zip">92130</span><span class="zone-addr">5 Rue du Lavoir, 92130 Issy-les-Moulineaux</span></li>
+            <li class="delivery-zone" data-zip="93100" data-label="93100 Montreuil"><span class="zone-zip">93100</span><span class="zone-addr">8 Rue de Paris, 93100 Montreuil</span></li>
+            <li class="delivery-zone" data-zip="94300" data-label="94300 Vincennes"><span class="zone-zip">94300</span><span class="zone-addr">21 Rue du Président Wilson, 94300 Vincennes</span></li>
+          </ul>
+        </div>
+      </div>
+      <button class="cart-btn" id="cartBtn" aria-label="View cart" onclick="window.location.href='/'">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+        <span class="cart-count" id="cartCount">0</span>
+      </button>
+      <a href="/track" class="track-order-btn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        Track Order
+      </a>
+      <a href="/admin" class="admin-btn" title="Admin Panel">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        <span>Admin</span>
+      </a>
+    </div>
+  </div>
+</nav>
+<script>
+(function(){
+  var nb=document.getElementById('navbar'),hb=document.getElementById('navHamburger'),nl=document.getElementById('navLinks');
+  var db=document.getElementById('deliveryBtn'),dd=document.getElementById('deliveryDropdown'),dl=document.getElementById('deliveryLocation');
+  window.addEventListener('scroll',function(){nb.classList.toggle('scrolled',window.scrollY>20);},{passive:true});
+  hb.addEventListener('click',function(){nl.classList.toggle('open');});
+  nl.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){nl.classList.remove('open');});});
+  db.addEventListener('click',function(e){e.stopPropagation();var o=dd.classList.contains('open');dd.classList.toggle('open',!o);db.classList.toggle('open',!o);db.setAttribute('aria-expanded',String(!o));});
+  dd.querySelectorAll('.delivery-zone').forEach(function(z){z.addEventListener('click',function(){dd.querySelectorAll('.delivery-zone').forEach(function(x){x.classList.remove('active');});z.classList.add('active');if(dl)dl.textContent=z.dataset.label||z.dataset.zip;dd.classList.remove('open');db.classList.remove('open');db.setAttribute('aria-expanded','false');});});
+  document.addEventListener('click',function(e){if(!db.contains(e.target)&&!dd.contains(e.target)){dd.classList.remove('open');db.classList.remove('open');db.setAttribute('aria-expanded','false');}});
+  var cc=document.getElementById('cartCount');if(cc){try{var ct=JSON.parse(localStorage.getItem('lcinco_cart')||'[]');cc.textContent=ct.reduce(function(s,i){return s+(i.qty||1);},0);}catch(e){}}
+})();
+</script>
+
+<div class="page-hero">
+  <p class="page-hero-tag">Order Status</p>
+  <h1 class="page-hero-title">Track Your <span>Order</span></h1>
+  <p class="page-hero-sub">Enter your order code to see real-time delivery status and order details.</p>
+</div>
+
+<main class="track-main">
+
+  <div class="track-search-card">
+    <h2>Enter Order Code</h2>
+    <p>Your order code was provided at checkout. It looks like <strong style="color:#ccc">LC-0001</strong>.</p>
+    <div class="track-input-row">
+      <input type="text" class="track-input" id="trackInput" placeholder="e.g. LC-0046" maxlength="12" autocomplete="off" />
+      <button class="track-search-btn" id="trackBtn" onclick="trackOrder()">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        Track
+      </button>
+    </div>
+    <div class="track-error" id="trackError"></div>
+    <p class="track-hint">Try: <strong>LC-0046</strong>, <strong>LC-0047</strong>, <strong>LC-0048</strong></p>
+  </div>
+
+  <div class="track-result" id="trackResult">
+    <div class="result-header">
+      <div class="result-order-num" id="resOrderNum">LC-0001</div>
+      <div id="resStatusWrap">
+        <div class="result-status-badge" id="resStatusBadge">
+          <span class="status-dot-anim"></span>
+          <span id="resStatusText">Processing</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="track-timeline">
+      <h3>Delivery Progress</h3>
+      <div class="timeline" id="trackTimeline"></div>
+    </div>
+
+    <div class="result-details">
+      <h3>Order Details</h3>
+      <div id="resDetails"></div>
+    </div>
+
+    <div class="result-back" onclick="resetTrack()">← Search another order</div>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-container">
+    <div class="footer-brand">
+      <div class="footer-logo">
+        <span class="logo-l">L'</span><span class="logo-cinco">CINCO</span>
+        <span class="logo-pizza">PIZZA</span>
+      </div>
+      <p class="footer-desc">The true taste of pizza! Homemade recipes, fresh ingredients and a whole lot of passion.</p>
+      <div class="footer-social">
+        <a href="#" aria-label="Facebook"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+        <a href="#" aria-label="Instagram"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
+        <a href="#" aria-label="TikTok"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.74a4.85 4.85 0 0 1-1.01-.05z"/></svg></a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>NAVIGATION</h4>
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/#pizzas">Our Pizzas</a></li>
+        <li><a href="/#menu">Meal</a></li>
+        <li><a href="/about">About Us</a></li>
+        <li><a href="/contact">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>INFORMATION</h4>
+      <ul>
+        <li><a href="/delivery">Delivery</a></li>
+        <li><a href="/terms">Terms &amp; Conditions</a></li>
+        <li><a href="/privacy">Privacy Policy</a></li>
+        <li><a href="/faq">FAQ</a></li>
+      </ul>
+    </div>
+    <div class="footer-col footer-contact">
+      <h4>CONTACT</h4>
+      <ul>
+        <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.41 2 2 0 0 1 3.6 1.23h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.77a16 16 0 0 0 6 6l.97-.97a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.73 16z"/></svg><span>+01 23 45 67 89</span></li>
+        <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg><span>contact@lcinco-pizza.fr</span></li>
+        <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg><span>1 Rue de Rivoli<br />75001 Paris, France</span></li>
+      </ul>
+    </div>
+    <div class="footer-col footer-newsletter">
+      <h4>STAY UPDATED</h4>
+      <p>Subscribe to our newsletter for offers and news!</p>
+      <form class="newsletter-form" id="newsletterForm">
+        <input type="email" placeholder="Your email" required />
+        <button type="submit" aria-label="Subscribe"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
+      </form>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2024 L'Cinco Pizza — All rights reserved.</p>
+    <p class="footer-credit">Made by <a href="https://www.fiverr.com/s/2K3oA3V" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;text-underline-offset:3px;">Adib</a></p>
+  </div>
+</footer>
+<script>document.getElementById('newsletterForm')?.addEventListener('submit',e=>{e.preventDefault();e.target.reset();alert('Subscribed! Thank you.');});</script>
+
+<script>
+  const STATUS_STEPS = [
+    { key: 'received',         label: 'Order Received',      sub: 'We got your order and are preparing it' },
+    { key: 'processing',       label: 'In the Kitchen',      sub: 'Your pizza is being hand-crafted right now' },
+    { key: 'out_for_delivery', label: 'Out for Delivery',    sub: 'On the way to your address' },
+    { key: 'completed',        label: 'Delivered',           sub: 'Enjoy your pizza!' },
+  ];
+  const STATUS_LABELS = {
+    received: 'Just Received',
+    processing: 'Processing',
+    out_for_delivery: 'Out for Delivery',
+    completed: 'Delivered',
+    cancelled: 'Cancelled',
+  };
+
+  document.getElementById('trackInput').addEventListener('keydown', e => {
+    if (e.key === 'Enter') trackOrder();
+  });
+
+  async function trackOrder() {
+    const code = document.getElementById('trackInput').value.trim();
+    if (!code) { showError('Please enter an order code.'); return; }
+    const btn = document.getElementById('trackBtn');
+    const errorEl = document.getElementById('trackError');
+    btn.disabled = true;
+    btn.innerHTML = '...';
+    errorEl.style.display = 'none';
+    document.getElementById('trackResult').style.display = 'none';
+    try {
+      const r = await fetch(`/api/track-order?code=${encodeURIComponent(code)}`);
+      const data = await r.json();
+      if (!r.ok) { showError(data.error || 'Order not found.'); return; }
+      renderResult(data);
+    } catch (_) {
+      showError('Could not connect. Please try again.');
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg> Track';
+    }
+  }
+
+  function renderResult(order) {
+    document.getElementById('resOrderNum').textContent = order.order_number;
+
+    // Status badge
+    const statusWrap = document.getElementById('resStatusWrap');
+    statusWrap.className = `status-${order.status}`;
+    document.getElementById('resStatusText').textContent = STATUS_LABELS[order.status] || order.status;
+
+    // Timeline
+    const isCancelled = order.status === 'cancelled';
+    const currentIdx = isCancelled ? -1 : STATUS_STEPS.findIndex(s => s.key === order.status);
+    const timeline = document.getElementById('trackTimeline');
+    timeline.innerHTML = isCancelled
+      ? `<div class="timeline-step current"><div class="timeline-dot"></div><div class="timeline-step-label" style="color:#ff6b6b">Order Cancelled</div><div class="timeline-step-sub">This order has been cancelled.</div></div>`
+      : STATUS_STEPS.map((step, i) => {
+          const done = i < currentIdx;
+          const current = i === currentIdx;
+          return `<div class="timeline-step ${done ? 'done' : ''} ${current ? 'current' : ''}">
+            <div class="timeline-dot">${done ? '<svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>' : ''}</div>
+            <div class="timeline-step-label">${step.label}</div>
+            <div class="timeline-step-sub">${step.sub}</div>
+          </div>`;
+        }).join('');
+
+    // Details
+    const items = (order.items || []).map(i => `${i.qty}× ${i.name} (${i.size})`).join(', ');
+    const date = new Date((order.created_at || 0) * 1000);
+    const dateStr = date.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) + ' ' + date.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+    document.getElementById('resDetails').innerHTML = `
+      <div class="detail-row"><span>Customer</span><span>${esc(order.customer_name || '—')}</span></div>
+      <div class="detail-row"><span>Ordered</span><span>${dateStr}</span></div>
+      <div class="detail-row"><span>Items</span><span>${esc(items || '—')}</span></div>
+      ${order.delivery_address ? `<div class="detail-row"><span>Delivery to</span><span>${esc(order.delivery_address)}</span></div>` : ''}
+      <div class="detail-row"><span>Total</span><span class="detail-total">$${parseFloat(order.total).toFixed(2)}</span></div>
+    `;
+
+    document.getElementById('trackResult').style.display = 'block';
+    document.getElementById('trackResult').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function showError(msg) {
+    const el = document.getElementById('trackError');
+    el.textContent = msg;
+    el.style.display = 'block';
+  }
+
+  function resetTrack() {
+    document.getElementById('trackResult').style.display = 'none';
+    document.getElementById('trackInput').value = '';
+    document.getElementById('trackInput').focus();
+    document.getElementById('trackError').style.display = 'none';
+  }
+
+  function esc(s) {
+    return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  // Auto-track if ?code= is in URL
+  const urlCode = new URLSearchParams(location.search).get('code');
+  if (urlCode) {
+    document.getElementById('trackInput').value = urlCode;
+    document.addEventListener('DOMContentLoaded', () => setTimeout(trackOrder, 300));
+  }
+</script>
+</body>
+</html>
