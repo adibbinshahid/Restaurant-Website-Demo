@@ -1691,7 +1691,6 @@ ul { list-style: none; }
   color: #fff;
 }
 .fcta-icon-admin  { background: linear-gradient(135deg, #c9a227, #9a7510); }
-.fcta-icon-fiverr { background: #1dbf73; }
 
 .fcta-text { flex: 1; line-height: 1; }
 .fcta-label {
@@ -1718,14 +1717,6 @@ ul { list-style: none; }
   transition: transform 0.22s ease;
 }
 .floating-cta-btn:hover .fcta-arrow { transform: translateX(2px); }
-.fcta-wordmark {
-  font-family: 'Inter', sans-serif;
-  font-size: 10.5px;
-  font-weight: 800;
-  color: #fff;
-  letter-spacing: -0.3px;
-  line-height: 1;
-}
 
 /* ── Toast Notifications ──────────────────────────────────────────── */
 
