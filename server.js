@@ -1,4 +1,5 @@
 const express = require('express');
+const compression = require('compression');
 const session = require('express-session');
 const bcrypt = require('bcryptjs');
 const multer = require('multer');
@@ -21,9 +22,19 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage, limits: { fileSize: 8 * 1024 * 1024 }, fileFilter: (req, file, cb) => { if (file.mimetype.startsWith('image/')) cb(null, true); else cb(new Error('Images only')); } });
 
+app.use(compression());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, 'public')));
+
+// Static assets: long cache for versioned/immutable-ish files, no auto index.html
+app.use(express.static(path.join(__dirname, 'public'), {
+  index: false,
+  etag: true,
+  maxAge: '30d',
+  setHeaders: (res, filePath) => {
+    if (filePath.endsWith('.html')) res.setHeader('Cache-Control', 'no-cache');
+  }
+}));
 app.use(session({ secret: process.env.SESSION_SECRET || 'lcinco-pizza-secret-2024', resave: false, saveUninitialized: false, cookie: { secure: false, httpOnly: true, maxAge: 24 * 60 * 60 * 1000 } }));
 
 const requireAdmin = (req, res, next) => {
@@ -410,6 +421,74 @@ app.post('/api/contact', (req, res) => {
 });
 
 // ── Serve static pages ────────────────────────────────────────────────────────
+
+// ── Home page (LCP-optimised: preloads + inlines the first hero slide) ───────
+
+const INDEX_PATH = path.join(__dirname, 'public/index.html');
+// Wide crops for landscape viewports; phones get a portrait crop instead so a
+// tall hero box does not have to upscale a letterboxed image.
+const HERO_SIZES = [[960, 384], [1400, 560], [1920, 768]];
+const HERO_MOBILE = [560, 627];
+const HERO_QUALITY = 50;
+
+// Rewrites Unsplash URLs to serve WebP at the width we actually render.
+function optimizeImage(url, width, quality = 70, height) {
+  if (!url || !/images\.unsplash\.com/.test(url)) return url;
+  const [base, query = ''] = url.split('?');
+  const params = new URLSearchParams(query);
+  params.set('w', String(width));
+  if (height) params.set('h', String(height)); else params.delete('h');
+  params.set('q', String(quality));
+  params.set('fm', 'webp');
+  params.set('auto', 'format');
+  params.set('fit', 'crop');
+  return `${base}?${params.toString()}`;
+}
+
+function escAttr(v) {
+  return String(v).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+app.get('/', (req, res) => {
+  let html;
+  try {
+    html = fs.readFileSync(INDEX_PATH, 'utf-8');
+  } catch (_) {
+    return res.status(500).send('Unable to load page');
+  }
+
+  let firstBanner = null;
+  try {
+    firstBanner = db.prepare('SELECT image_url FROM hero_banners WHERE active=1 ORDER BY sort_order LIMIT 1').get();
+  } catch (_) {}
+
+  if (firstBanner && firstBanner.image_url) {
+    const url = firstBanner.image_url;
+    const src = optimizeImage(url, 1400, HERO_QUALITY, 560);
+    const srcset = HERO_SIZES.map(([w, h]) => `${optimizeImage(url, w, HERO_QUALITY, h)} ${w}w`).join(', ');
+    const mobileSrc = optimizeImage(url, HERO_MOBILE[0], 45, HERO_MOBILE[1]);
+
+    // Preload so the LCP image is discoverable in the HTML, not after main.js + /api/hero-banners.
+    html = html.replace(
+      '</head>',
+      `  <link rel="preload" as="image" href="${escAttr(src)}" imagesrcset="${escAttr(srcset)}" imagesizes="100vw" media="(min-width: 701px)" fetchpriority="high" />\n` +
+      `  <link rel="preload" as="image" href="${escAttr(mobileSrc)}" media="(max-width: 700px)" fetchpriority="high" />\n</head>`
+    );
+    // Paint slide 0 from the served HTML; main.js keeps it and appends the rest.
+    html = html.replace(
+      '<div class="hero-slides" id="heroSlides"></div>',
+      `<div class="hero-slides" id="heroSlides" data-prerendered="${escAttr(url)}">` +
+      `<div class="hero-slide active" data-index="0"><picture>` +
+      `<source media="(max-width: 700px)" srcset="${escAttr(mobileSrc)}" width="${HERO_MOBILE[0]}" height="${HERO_MOBILE[1]}" />` +
+      `<img src="${escAttr(src)}" srcset="${escAttr(srcset)}" sizes="100vw" alt="" ` +
+      `width="1400" height="560" fetchpriority="high" decoding="async" />` +
+      `</picture></div></div>`
+    );
+  }
+
+  res.set('Cache-Control', 'no-cache');
+  res.type('html').send(html);
+});
 
 app.get('/admin', (req, res) => res.sendFile(path.join(__dirname, 'public/admin.html')));
 app.get('/about', (req, res) => res.sendFile(path.join(__dirname, 'public/about.html')));

@@ -14,7 +14,7 @@
   --accent-yellow-dark: #d4a017;
   --text-primary: #ffffff;
   --text-secondary: #b0b0b0;
-  --text-muted: #666666;
+  --text-muted: #909090;
   --border: #2a2a2a;
   --border-hover: #3d3d3d;
   --shadow: 0 4px 24px rgba(0,0,0,0.5);
@@ -410,6 +410,17 @@ ul { list-style: none; }
   background-position: center;
   opacity: 0;
   transition: opacity 0.8s ease;
+}
+.hero-slide picture {
+  display: block;
+  position: absolute;
+  inset: 0;
+}
+.hero-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
 }
 .hero-slide.active { opacity: 1; }
 
@@ -862,7 +873,7 @@ ul { list-style: none; }
 }
 .badge-bestseller { background: var(--accent-red); color: #fff; }
 .badge-veggie { background: #2e7d32; color: #fff; }
-.badge-spicy { background: #e65100; color: #fff; }
+.badge-spicy { background: #c2410c; color: #fff; }
 .badge-new { background: var(--accent-yellow); color: #000; }
 
 .pizza-wishlist {
@@ -973,7 +984,7 @@ ul { list-style: none; }
 
 .pizza-price {
   font-family: 'Montserrat', sans-serif;
-  font-size: 17px;
+  font-size: 19px;
   font-weight: 800;
   color: var(--accent-red);
 }
@@ -1240,7 +1251,7 @@ ul { list-style: none; }
 }
 .footer-social a:hover { color: var(--text-primary); border-color: var(--border-hover); background: rgba(255,255,255,0.1); }
 
-.footer-col h4 {
+.footer-col h3 {
   font-family: 'Montserrat', sans-serif;
   font-size: 11px;
   font-weight: 800;
@@ -1699,7 +1710,7 @@ ul { list-style: none; }
   font-size: 9px;
   font-weight: 600;
   letter-spacing: 0.8px;
-  color: #6b7280;
+  color: #4b5563;
   text-transform: uppercase;
   margin-bottom: 3px;
 }

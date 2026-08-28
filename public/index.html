@@ -8,7 +8,9 @@
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,600&family=Poppins:wght@300;400;500;600;700&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,600&family=Poppins:wght@300;400;500;600;700&display=swap" media="print" onload="this.media='all'" />
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,600&family=Poppins:wght@300;400;500;600;700&display=swap" /></noscript>
   <link rel="stylesheet" href="/css/style.css" />
 </head>
 <body>
@@ -107,6 +109,8 @@
   </div>
 </nav>
 
+<main id="main">
+
 <!-- Hero Section -->
 <section class="hero" id="hero">
   <div class="hero-slides" id="heroSlides"></div>
@@ -147,9 +151,9 @@
   <div class="hero-meta-fixed">
     <div class="hero-reviews">
       <div class="hero-avatars">
-        <img src="https://i.pravatar.cc/32?img=1" alt="" />
-        <img src="https://i.pravatar.cc/32?img=5" alt="" />
-        <img src="https://i.pravatar.cc/32?img=9" alt="" />
+        <img src="https://i.pravatar.cc/32?img=1" alt="" width="32" height="32" loading="lazy" decoding="async" />
+        <img src="https://i.pravatar.cc/32?img=5" alt="" width="32" height="32" loading="lazy" decoding="async" />
+        <img src="https://i.pravatar.cc/32?img=9" alt="" width="32" height="32" loading="lazy" decoding="async" />
       </div>
       <div>
         <div class="stars">
@@ -247,7 +251,12 @@
       <a href="#pizzas" class="btn-primary">ORDER NOW</a>
     </div>
     <div class="meal-deal-img">
-      <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=600&auto=format&fit=crop" alt="Pizza Meal Deal" loading="lazy" />
+      <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=480&h=580&q=70&fm=webp&auto=format&fit=crop"
+           srcset="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=320&h=387&q=70&fm=webp&auto=format&fit=crop 320w,
+                   https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=480&h=580&q=70&fm=webp&auto=format&fit=crop 480w,
+                   https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=640&h=773&q=70&fm=webp&auto=format&fit=crop 640w"
+           sizes="(max-width: 900px) 320px, 480px"
+           alt="Pizza Meal Deal" width="480" height="580" loading="lazy" decoding="async" />
     </div>
   </div>
 
@@ -299,6 +308,8 @@
   </div>
 </section>
 
+</main>
+
 <!-- Footer -->
 <footer class="footer" id="contact">
   <div class="footer-container">
@@ -322,7 +333,7 @@
     </div>
 
     <div class="footer-col">
-      <h4>NAVIGATION</h4>
+      <h3>NAVIGATION</h3>
       <ul>
         <li><a href="/">Home</a></li>
         <li><a href="#pizzas">Our Pizzas</a></li>
@@ -333,7 +344,7 @@
     </div>
 
     <div class="footer-col">
-      <h4>INFORMATION</h4>
+      <h3>INFORMATION</h3>
       <ul>
         <li><a href="/delivery">Delivery</a></li>
         <li><a href="/terms">Terms &amp; Conditions</a></li>
@@ -343,7 +354,7 @@
     </div>
 
     <div class="footer-col footer-contact">
-      <h4>CONTACT</h4>
+      <h3>CONTACT</h3>
       <ul>
         <li>
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.41 2 2 0 0 1 3.6 1.23h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.77a16 16 0 0 0 6 6l.97-.97a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.73 16z"/></svg>
@@ -361,7 +372,7 @@
     </div>
 
     <div class="footer-col footer-newsletter">
-      <h4>STAY UPDATED</h4>
+      <h3>STAY UPDATED</h3>
       <p>Subscribe to our newsletter for offers and news!</p>
       <form class="newsletter-form" id="newsletterForm">
         <input type="email" placeholder="Your email" required />
@@ -454,6 +465,6 @@
   </a>
 </div>
 
-<script src="/js/main.js"></script>
+<script src="/js/main.js" defer></script>
 </body>
 </html>

@@ -51,6 +51,26 @@ async function loadSettings() {
   } catch (_) {}
 }
 
+// ── Image helper ────────────────────────────────────────────────────────────
+
+// Rewrites Unsplash URLs so we download WebP at roughly the size we render.
+const HERO_SIZES = [[960, 384], [1400, 560], [1920, 768]];
+const HERO_MOBILE = [560, 627];
+const HERO_QUALITY = 50;
+
+function imgUrl(url, width, quality = 70, height) {
+  if (!url || !/images\.unsplash\.com/.test(url)) return url;
+  const [base, query = ''] = url.split('?');
+  const params = new URLSearchParams(query);
+  params.set('w', String(width));
+  if (height) params.set('h', String(height)); else params.delete('h');
+  params.set('q', String(quality));
+  params.set('fm', 'webp');
+  params.set('auto', 'format');
+  params.set('fit', 'crop');
+  return base + '?' + params.toString();
+}
+
 // ── API helper ──────────────────────────────────────────────────────
 
 async function api(url, opts = {}) {
@@ -93,11 +113,47 @@ async function loadHeroBanners() {
 
 function renderHeroSlides(banners) {
   const container = document.getElementById('heroSlides');
-  container.innerHTML = banners.map((b, i) => `
-    <div class="hero-slide ${i === 0 ? 'active' : ''}"
-         style="background-image: url('${escAttr(b.image_url)}')"
-         data-index="${i}"></div>
-  `).join('');
+
+  // The server paints slide 0 into the HTML so the LCP image is discoverable
+  // without waiting on this script + /api/hero-banners. Keep it if it matches.
+  const prerendered = container.dataset.prerendered;
+  const keepFirst = prerendered && banners[0] && prerendered === banners[0].image_url
+    && container.querySelector('.hero-slide');
+
+  const slideHTML = (b, i) => `
+    <div class="hero-slide ${i === 0 ? 'active' : ''}" data-index="${i}">
+      <picture>
+        <source media="(max-width: 700px)"
+                srcset="${escAttr(imgUrl(b.image_url, HERO_MOBILE[0], 45, HERO_MOBILE[1]))}"
+                width="${HERO_MOBILE[0]}" height="${HERO_MOBILE[1]}" />
+        <img src="${escAttr(imgUrl(b.image_url, 1400, HERO_QUALITY, 560))}"
+             srcset="${HERO_SIZES.map(([w, h]) => `${escAttr(imgUrl(b.image_url, w, HERO_QUALITY, h))} ${w}w`).join(', ')}"
+             sizes="100vw" alt="" width="1400" height="560"
+             ${i === 0 ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async" />
+      </picture>
+    </div>
+  `;
+
+  // Slides 1..n sit in the viewport, so `loading="lazy"` will not hold them
+  // back — they would race the LCP image for bandwidth. Add them once the page
+  // has finished loading; the slideshow only needs them after 2.5s.
+  const addRest = () => {
+    if (container.dataset.restAdded) return;
+    container.dataset.restAdded = '1';
+    container.insertAdjacentHTML('beforeend', banners.slice(1).map((b, i) => slideHTML(b, i + 1)).join(''));
+  };
+
+  if (keepFirst) {
+    afterLoad(addRest);
+  } else {
+    container.innerHTML = slideHTML(banners[0], 0);
+    afterLoad(addRest);
+  }
+}
+
+function afterLoad(fn) {
+  if (document.readyState === 'complete') setTimeout(fn, 0);
+  else window.addEventListener('load', () => setTimeout(fn, 0), { once: true });
 }
 
 function renderHeroDots(count) {
@@ -190,8 +246,11 @@ function pizzaCardHTML(p) {
 
   return `
     <div class="pizza-card" data-id="${p.id}">
-      <div class="pizza-card-img-wrap" data-id="${p.id}" role="button" tabindex="0" aria-label="View ${escAttr(p.name)}">
-        <img src="${escAttr(p.image_url)}" alt="${escAttr(p.name)}" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#2a1a0e,#3d1f0a)';this.style.display='block';this.removeAttribute('src')" />
+      <div class="pizza-card-img-wrap" data-id="${p.id}" role="button" tabindex="0" aria-label="${p.badge ? escAttr(p.badge.toUpperCase()) + ' — ' : ''}View ${escAttr(p.name)}">
+        <img src="${escAttr(imgUrl(p.image_url, 320))}"
+             srcset="${escAttr(imgUrl(p.image_url, 240))} 240w, ${escAttr(imgUrl(p.image_url, 320))} 320w, ${escAttr(imgUrl(p.image_url, 480))} 480w, ${escAttr(imgUrl(p.image_url, 640))} 640w"
+             sizes="(max-width: 600px) 45vw, (max-width: 1100px) 30vw, 300px"
+             alt="${escAttr(p.name)}" width="320" height="320" loading="lazy" fetchpriority="low" decoding="async" onerror="this.style.background='linear-gradient(135deg,#2a1a0e,#3d1f0a)';this.style.display='block';this.removeAttribute('src')" />
         <div class="pizza-card-badges">${badgeHTML}</div>
         <button class="pizza-wishlist ${inWishlist ? 'active' : ''}" data-id="${p.id}" aria-label="Wishlist">
           <svg viewBox="0 0 24 24" fill="${inWishlist ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
@@ -400,7 +459,7 @@ function updateCartUI() {
   itemsEl.innerHTML = state.cart.map(item => `
     <div class="cart-item">
       <div class="cart-item-img">
-        <img src="${escAttr(item.image)}" alt="${escAttr(item.name)}" onerror="this.style.background='#1a1a1a';this.removeAttribute('src')" />
+        <img src="${escAttr(imgUrl(item.image, 128))}" alt="${escAttr(item.name)}" width="128" height="128" loading="lazy" decoding="async" onerror="this.style.background='#1a1a1a';this.removeAttribute('src')" />
       </div>
       <div class="cart-item-info">
         <p class="cart-item-name">${escHtml(item.name)}</p>
@@ -502,7 +561,7 @@ function openLightbox(index) {
   const pizza = state.filteredPizzas[index];
   if (!pizza) return;
 
-  document.getElementById('lightboxImg').src = pizza.image_url;
+  document.getElementById('lightboxImg').src = imgUrl(pizza.image_url, 900, 75);
   document.getElementById('lightboxImg').alt = pizza.name;
   document.getElementById('lightboxName').textContent = pizza.name;
   document.getElementById('lightboxDesc').textContent = pizza.description || '';
