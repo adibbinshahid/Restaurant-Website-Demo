@@ -10,21 +10,80 @@ const db = require('./database');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-const uploadsDir = process.env.VERCEL ? '/tmp/uploads' : path.join(__dirname, 'public/uploads');
-if (!fs.existsSync(uploadsDir)) fs.mkdirSync(uploadsDir, { recursive: true });
+const crypto = require('crypto');
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => cb(null, uploadsDir),
-  filename: (req, file, cb) => {
-    const unique = Date.now() + '-' + Math.round(Math.random() * 1e9);
-    cb(null, unique + path.extname(file.originalname));
-  }
+// ── Demo mode ────────────────────────────────────────────────────────────────
+// On by default. Anyone can log in (admin/admin) and browse the admin panel,
+// but every write is answered with a success-shaped response and never
+// reaches the database. Set DEMO_MODE=false to run as a real store.
+const DEMO_MODE = process.env.DEMO_MODE !== 'false';
+const DEMO_MESSAGE = 'Demo mode — changes aren\'t saved.';
+
+// ── File uploads: disabled ───────────────────────────────────────────────────
+// multer().none() parses text fields of multipart forms but rejects any file
+// part before it is stored, so nothing is ever written to disk.
+const noFiles = multer({ limits: { files: 0, fileSize: 0, fieldSize: 100 * 1024 } }).none();
+const upload = { single: () => noFiles };
+
+// ── Rate limiting (in-memory, per IP) ───────────────────────────────────────
+function rateLimit({ windowMs = 10 * 60 * 1000, max = 10 } = {}) {
+  const hits = new Map();
+  setInterval(() => {
+    const now = Date.now();
+    for (const [k, v] of hits) if (v.reset <= now) hits.delete(k);
+  }, windowMs).unref();
+  return (req, res, next) => {
+    const now = Date.now();
+    const key = req.ip || (req.socket && req.socket.remoteAddress) || 'unknown';
+    let entry = hits.get(key);
+    if (!entry || entry.reset <= now) { entry = { count: 0, reset: now + windowMs }; hits.set(key, entry); }
+    entry.count++;
+    if (entry.count > max) {
+      res.set('Retry-After', String(Math.ceil((entry.reset - now) / 1000)));
+      return res.status(429).json({ error: 'Too many requests. Please try again in a few minutes.' });
+    }
+    next();
+  };
+}
+const limitLogin = rateLimit();
+const limitContact = rateLimit();
+const limitTrack = rateLimit();
+const limitCoupon = rateLimit();
+const limitDelivery = rateLimit();
+
+// ── Security headers ─────────────────────────────────────────────────────────
+const CSP = [
+  "default-src 'self'",
+  "script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net",
+  "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+  "font-src 'self' https://fonts.gstatic.com data:",
+  "img-src 'self' data: blob: https://images.unsplash.com https://i.pravatar.cc",
+  "connect-src 'self'",
+  "frame-src 'none'",
+  "frame-ancestors 'none'",
+  "object-src 'none'",
+  "base-uri 'self'",
+  "form-action 'self'",
+].join('; ');
+
+app.disable('x-powered-by');
+if (process.env.VERCEL) app.set('trust proxy', 1);
+
+app.use((req, res, next) => {
+  res.set({
+    'X-Content-Type-Options': 'nosniff',
+    'X-Frame-Options': 'DENY',
+    'Referrer-Policy': 'strict-origin-when-cross-origin',
+    'Permissions-Policy': 'camera=(), microphone=(), geolocation=()',
+    'Content-Security-Policy': CSP,
+  });
+  if (req.path.startsWith('/admin')) res.set('X-Robots-Tag', 'noindex, nofollow');
+  next();
 });
-const upload = multer({ storage, limits: { fileSize: 8 * 1024 * 1024 }, fileFilter: (req, file, cb) => { if (file.mimetype.startsWith('image/')) cb(null, true); else cb(new Error('Images only')); } });
 
 app.use(compression());
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: '100kb' }));
+app.use(express.urlencoded({ extended: true, limit: '100kb' }));
 
 // Static assets: long cache for versioned/immutable-ish files, no auto index.html
 app.use(express.static(path.join(__dirname, 'public'), {
@@ -35,12 +94,53 @@ app.use(express.static(path.join(__dirname, 'public'), {
     if (filePath.endsWith('.html')) res.setHeader('Cache-Control', 'no-cache');
   }
 }));
-app.use(session({ secret: process.env.SESSION_SECRET || 'lcinco-pizza-secret-2024', resave: false, saveUninitialized: false, cookie: { secure: false, httpOnly: true, maxAge: 24 * 60 * 60 * 1000 } }));
+app.use(session({
+  secret: process.env.SESSION_SECRET || crypto.randomBytes(32).toString('hex'),
+  resave: false,
+  saveUninitialized: false,
+  cookie: { secure: !!process.env.VERCEL, httpOnly: true, sameSite: 'lax', maxAge: 24 * 60 * 60 * 1000 },
+}));
 
 const requireAdmin = (req, res, next) => {
   if (req.session && req.session.isAdmin) return next();
   res.status(401).json({ error: 'Unauthorized' });
 };
+
+// Demo read-only gate: runs before every /admin/api route. Reads pass through;
+// writes (POST/PUT/PATCH/DELETE) get a success-shaped reply and touch nothing.
+app.use('/admin/api', (req, res, next) => {
+  if (!DEMO_MODE || ['GET', 'HEAD', 'OPTIONS'].includes(req.method)) return next();
+  if (!(req.session && req.session.isAdmin)) return res.status(401).json({ error: 'Unauthorized' });
+  res.set('X-Demo-Mode', '1');
+  const body = { success: true, demo: true, message: DEMO_MESSAGE };
+  if (req.method === 'POST') body.id = 0;
+  res.json(body);
+});
+
+// ── Daily demo reset (safety net) ────────────────────────────────────────────
+function resetDemo(source) {
+  try {
+    const n = db.resetToSeed();
+    console.log(`♻️  Demo data reset (${source}) — ${n} tables restored`);
+    return true;
+  } catch (e) {
+    console.error('Demo reset failed:', e.message);
+    return false;
+  }
+}
+// Long-running hosts: reset every 24h in-process.
+setInterval(() => resetDemo('interval'), 24 * 60 * 60 * 1000).unref();
+// Vercel Cron (see vercel.json) calls this with `Authorization: Bearer $CRON_SECRET`.
+app.get('/api/cron/reset-demo', (req, res) => {
+  const secret = process.env.CRON_SECRET;
+  const auth = req.get('authorization') || '';
+  const expected = `Bearer ${secret}`;
+  if (!secret || auth.length !== expected.length ||
+      !crypto.timingSafeEqual(Buffer.from(auth), Buffer.from(expected))) {
+    return res.status(401).json({ error: 'Unauthorized' });
+  }
+  res.json({ success: resetDemo('cron') });
+});
 
 // ── Public API ───────────────────────────────────────────────────────────────
 
@@ -66,7 +166,7 @@ app.get('/api/settings', (req, res) => {
 });
 app.get('/api/meals', (req, res) => res.json(db.prepare('SELECT * FROM meals WHERE active=1 ORDER BY sort_order').all()));
 
-app.post('/api/check-delivery', (req, res) => {
+app.post('/api/check-delivery', limitDelivery, (req, res) => {
   const { zip } = req.body;
   if (!zip) return res.json({ available: false, message: 'Please enter a ZIP code.' });
   const clean = zip.trim().replace(/\s/g, '');
@@ -103,7 +203,7 @@ app.get('/api/store-status', (req, res) => {
   res.json({ accepting, isOpen, autoSchedule, message: settings.status_message || '' });
 });
 
-app.post('/api/validate-coupon', (req, res) => {
+app.post('/api/validate-coupon', limitCoupon, (req, res) => {
   const { code, subtotal } = req.body;
   const coupon = db.prepare('SELECT * FROM coupons WHERE code=? AND active=1').get(code?.toUpperCase());
   if (!coupon) return res.json({ valid: false, message: 'Coupon not found or inactive' });
@@ -116,12 +216,16 @@ app.post('/api/validate-coupon', (req, res) => {
 
 // ── Admin Auth ────────────────────────────────────────────────────────────────
 
-app.post('/admin/login', (req, res) => {
-  const { username, password } = req.body;
+app.post('/admin/login', limitLogin, (req, res) => {
+  const { username, password } = req.body || {};
+  if (typeof username !== 'string' || typeof password !== 'string') return res.status(400).json({ error: 'Invalid credentials' });
   const user = db.prepare('SELECT * FROM admin_users WHERE username=?').get(username);
   if (!user || !bcrypt.compareSync(password, user.password_hash)) return res.status(401).json({ error: 'Invalid credentials' });
-  req.session.isAdmin = true; req.session.adminUser = username;
-  res.json({ success: true });
+  req.session.regenerate(err => {
+    if (err) return res.status(500).json({ error: 'Login failed' });
+    req.session.isAdmin = true; req.session.adminUser = username;
+    res.json({ success: true });
+  });
 });
 app.post('/admin/logout', (req, res) => { req.session.destroy(() => res.json({ success: true })); });
 app.get('/admin/check-auth', (req, res) => res.json({ authenticated: !!(req.session && req.session.isAdmin) }));
@@ -394,7 +498,7 @@ app.post('/admin/api/store-settings', requireAdmin, (req, res) => {
 
 // ── Public: Order Tracking ────────────────────────────────────────────────────
 
-app.get('/api/track-order', (req, res) => {
+app.get('/api/track-order', limitTrack, (req, res) => {
   const code = (req.query.code || '').trim().toUpperCase();
   if (!code) return res.status(400).json({ error: 'Order code required' });
   const order = db.prepare('SELECT * FROM orders WHERE order_number=?').get(code);
@@ -413,7 +517,7 @@ app.get('/api/track-order', (req, res) => {
 
 // ── Public: Contact Form ──────────────────────────────────────────────────────
 
-app.post('/api/contact', (req, res) => {
+app.post('/api/contact', limitContact, (req, res) => {
   const { name, email, phone, subject, message } = req.body;
   if (!name || !email || !message) return res.status(400).json({ error: 'Name, email and message are required' });
   console.log(`📬 Contact form — ${name} <${email}>: ${subject}`);
@@ -498,6 +602,14 @@ app.get('/delivery', (req, res) => res.sendFile(path.join(__dirname, 'public/del
 app.get('/terms', (req, res) => res.sendFile(path.join(__dirname, 'public/terms.html')));
 app.get('/privacy', (req, res) => res.sendFile(path.join(__dirname, 'public/privacy.html')));
 app.get('/faq', (req, res) => res.sendFile(path.join(__dirname, 'public/faq.html')));
+
+// Rejected uploads and oversized bodies → JSON error instead of an HTML stack page.
+app.use((err, req, res, next) => {
+  if (err instanceof multer.MulterError) return res.status(400).json({ error: 'File uploads are disabled.' });
+  if (err.type === 'entity.too.large') return res.status(413).json({ error: 'Request too large.' });
+  console.error(err);
+  res.status(500).json({ error: 'Server error' });
+});
 
 app.listen(PORT, () => {
   console.log(`\n🍕 L'Cinco Pizza running at http://localhost:${PORT}`);

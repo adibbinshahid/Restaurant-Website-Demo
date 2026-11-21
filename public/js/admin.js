@@ -2,6 +2,21 @@
    L'Cinco Pizza — Admin JS (Full)
    ═══════════════════════════════════════════════════════════════════ */
 
+// Demo mode: the server answers admin writes with an X-Demo-Mode header and
+// saves nothing. Let the visitor know with a small toast (once per action).
+(() => {
+  const nativeFetch = window.fetch.bind(window);
+  let lastDemoToast = 0;
+  window.fetch = async (...args) => {
+    const r = await nativeFetch(...args);
+    if (r.headers.get('X-Demo-Mode') && Date.now() - lastDemoToast > 1500) {
+      lastDemoToast = Date.now();
+      setTimeout(() => toast('Demo mode \u2014 changes aren\'t saved.', 'info'), 350);
+    }
+    return r;
+  };
+})();
+
 const S = {
   pizzas: [], banners: [], announcements: [], orders: [], coupons: [], meals: [],
   stats: null, chartData: [], chartRange: 7, orderFilter: 'all',
@@ -26,7 +41,7 @@ function showLogin() {
     try {
       const res = await api('/admin/login', { method: 'POST', body: JSON.stringify({ username: document.getElementById('loginUser').value, password: document.getElementById('loginPass').value }) });
       if (res.success) showApp(); else errEl.textContent = 'Invalid credentials';
-    } catch (_) { errEl.textContent = 'Login failed. Please retry.'; }
+    } catch (e) { errEl.textContent = /429/.test(e.message) ? 'Too many attempts. Please wait a few minutes.' : 'Login failed. Please retry.'; }
   });
 }
 
@@ -242,7 +257,7 @@ function activeOrderRows() {
 }
 
 function tableHTML(headers, rows) {
-  return `<table class="detail-table"><thead><tr>${headers.map(h => `<th style="padding:6px 10px;font-size:11px;color:var(--txt2);text-align:left;border-bottom:1px solid var(--border)">${h}</th>`).join('')}</tr></thead><tbody>${rows.map(r => `<tr>${r.map((c, i) => `<td${i === r.length - 1 ? ' style="text-align:right"' : ''}>${c}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
+  return `<table class="detail-table"><thead><tr>${headers.map(h => `<th style="padding:6px 10px;font-size:11px;color:var(--txt2);text-align:left;border-bottom:1px solid var(--border)">${h}</th>`).join('')}</tr></thead><tbody>${rows.map(r => `<tr>${r.map((c, i) => `<td${i === r.length - 1 ? ' style="text-align:right"' : ''}>${escHtml(c)}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
 }
 
 function updateOrdersBadge(count) {
@@ -283,9 +298,9 @@ function renderOrdersTable() {
     const isActive = ['received','processing','out_for_delivery'].includes(o.status);
     const elapsed = now - (o.created_at || now);
     const timerClass = elapsed > 1800 ? 'timer-danger' : elapsed > 900 ? 'timer-warn' : 'timer-ok';
-    const timerDisplay = isActive ? `<span class="order-timer ${timerClass}" data-ts="${o.created_at}">${formatElapsed(elapsed)}</span>` : `<span class="timer-done">—</span>`;
+    const timerDisplay = isActive ? `<span class="order-timer ${timerClass}" data-ts="${Number(o.created_at) || 0}">${formatElapsed(elapsed)}</span>` : `<span class="timer-done">—</span>`;
     const statusOpts = [['received','Just Received'],['processing','Processing'],['out_for_delivery','Out for Delivery'],['completed','Completed'],['cancelled','Cancelled']];
-    const statusEl = `<span class="status-badge status-${o.status}"><select class="status-select" data-id="${o.id}" onchange="updateOrderStatus(${o.id},this.value)">${statusOpts.map(([v,l]) => `<option value="${v}"${v===o.status?' selected':''}>${l}</option>`).join('')}</select></span>`;
+    const statusEl = `<span class="status-badge status-${escAttr(o.status)}"><select class="status-select" data-id="${o.id}" onchange="updateOrderStatus(${o.id},this.value)">${statusOpts.map(([v,l]) => `<option value="${v}"${v===o.status?' selected':''}>${l}</option>`).join('')}</select></span>`;
     return `<tr data-order-id="${o.id}">
       <td><strong style="font-size:12.5px">${escHtml(o.order_number)}</strong><div style="font-size:10.5px;color:var(--muted)">${new Date(o.created_at*1000).toLocaleDateString()}</div></td>
       <td><div style="font-size:13px;font-weight:600;color:var(--txt)">${escHtml(o.customer_name||'Unknown')}</div><div style="font-size:11px;color:var(--muted)">${escHtml(o.customer_phone||'')}</div></td>
@@ -384,11 +399,11 @@ function renderPizzasTable() {
   tbody.innerHTML = S.pizzas.map(p => `<tr>
     <td class="td-img"><img src="${escAttr(p.image_url)}" onerror="this.style.background='#1a1a1a';this.removeAttribute('src')" /></td>
     <td><span class="td-name">${escHtml(p.name)}</span></td>
-    <td>${capitalize(p.category)}</td>
+    <td>${escHtml(capitalize(p.category))}</td>
     <td class="td-price">$${(+p.price_s).toFixed(2)}</td>
     <td class="td-price">$${(+p.price_m).toFixed(2)}</td>
     <td class="td-price">$${(+p.price_l).toFixed(2)}</td>
-    <td>${p.badge ? `<span class="badge-pill ${p.badge}">${p.badge.toUpperCase()}</span>` : '<span class="badge-pill none">—</span>'}</td>
+    <td>${p.badge ? `<span class="badge-pill ${escAttr(p.badge)}">${escHtml(p.badge.toUpperCase())}</span>` : '<span class="badge-pill none">—</span>'}</td>
     <td><span class="status-pill ${p.active?'active':'inactive'}"><span class="status-dot"></span>${p.active?'Active':'Hidden'}</span></td>
     <td class="td-actions">
       <button class="btn-edit" onclick="openPizzaModal('edit',${p.id})">Edit</button>

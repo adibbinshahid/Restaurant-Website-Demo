@@ -312,4 +312,34 @@ if (storeSettingsCount.count === 0) {
   stmt.run('status_message', 'We are open! Order now for fast delivery.');
 }
 
+// ── Demo reset: snapshot the seeded DB once, restore it on demand ───────────
+// The first boot writes a copy of the seeded database. resetToSeed() copies
+// every table back from that snapshot, so the shared demo returns to its
+// original state no matter what happened in between.
+const SEED_PATH = path.join(dbDir, 'pizza.seed.db');
+if (!fs.existsSync(SEED_PATH)) {
+  db.pragma('wal_checkpoint(TRUNCATE)');
+  fs.writeFileSync(SEED_PATH, db.serialize());
+}
+
+db.resetToSeed = function resetToSeed() {
+  db.prepare('ATTACH DATABASE ? AS seed').run(SEED_PATH);
+  try {
+    const tables = db
+      .prepare("SELECT name FROM seed.sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'")
+      .all()
+      .map(r => r.name);
+    db.transaction(() => {
+      for (const t of tables) {
+        const q = '"' + t.replace(/"/g, '""') + '"';
+        db.exec(`DELETE FROM main.${q}`);
+        db.exec(`INSERT INTO main.${q} SELECT * FROM seed.${q}`);
+      }
+    })();
+    return tables.length;
+  } finally {
+    db.exec('DETACH DATABASE seed');
+  }
+};
+
 module.exports = db;

@@ -8,3 +8,4 @@ database.sqlite
 *.log
 .DS_Store
 
+data/pizza.seed.db

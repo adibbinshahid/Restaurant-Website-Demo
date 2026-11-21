@@ -39,12 +39,12 @@ async function loadSettings() {
   try {
     const s = await api('/api/settings');
     if (s.total_reviews) document.getElementById('totalReviews').textContent = Number(s.total_reviews).toLocaleString();
-    if (s.overall_rating) document.getElementById('heroRatingText').innerHTML = `${s.overall_rating} (<span id="totalReviews">${Number(s.total_reviews || 2134).toLocaleString()}</span> reviews)`;
+    if (s.overall_rating) document.getElementById('heroRatingText').innerHTML = `${escHtml(s.overall_rating)} (<span id="totalReviews">${Number(s.total_reviews || 2134).toLocaleString()}</span> reviews)`;
     if (s.orders_this_week) document.getElementById('ordersThisWeek').textContent = Number(s.orders_this_week).toLocaleString() + '+';
     if (s.meal_price) document.getElementById('mealDealPrice').textContent = '$' + parseFloat(s.meal_price).toFixed(2);
     if (s.phone) document.getElementById('footerPhone').textContent = s.phone;
     if (s.email) document.getElementById('footerEmail').textContent = s.email;
-    if (s.address) document.getElementById('footerAddress').innerHTML = s.address.replace(/\n/g, '<br>');
+    if (s.address) document.getElementById('footerAddress').innerHTML = escHtml(s.address).replace(/\n/g, '<br>');
     if (s.overall_rating) document.getElementById('reviewRating').textContent = s.overall_rating;
     if (s.total_reviews) document.getElementById('reviewCount').textContent = Number(s.total_reviews).toLocaleString();
     if (s.whatsapp) document.getElementById('whatsappBtn').href = `https://wa.me/${s.whatsapp.replace(/\D/g, '')}`;
