@@ -373,7 +373,7 @@ function initCart() {
   document.getElementById('cartOverlay').addEventListener('click', closeCart);
   document.getElementById('cartClose').addEventListener('click', closeCart);
   document.getElementById('cartClearBtn').addEventListener('click', clearCart);
-  document.getElementById('cartEmptyCta').addEventListener('click', closeCart);
+  document.getElementById('cartEmptyCta')?.addEventListener('click', closeCart);
   document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeCart(); closeLightbox(); } });
 }
 
